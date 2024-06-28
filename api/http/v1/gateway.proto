@@ -1,0 +1,176 @@
+syntax = "proto3";
+
+package api.http.v1;
+
+option go_package = "api_gateway_service/api/http/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.http.v1";
+option objc_class_prefix = "ApiHttpV1";
+
+import "common/common.proto";
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+
+// 全部http接口
+service Gateway {
+  // 注册账户
+  rpc RegisterAccount (RegisterAccountReq) returns (common.Res) {
+    option (google.api.http) = {
+      post: "/v1/user/account/register"
+      body: "*"
+    };
+  }
+  // 通用读取账户信息
+  rpc GetAccountInfo (GetAccountInfoReq) returns (common.Res) {
+    option (google.api.http) = {
+      get: "/v1/user/account/info"
+      additional_bindings {
+        get: "/v1/user/account/info/{uid}"
+      }
+    };
+  }
+  // 更新用户账户数据
+  rpc UpdateAccount (UpdateAccountReq) returns (common.Res) {
+    option (google.api.http) = {
+      post: "/v1/user/account/update"
+      body: "*"
+    };
+  }
+
+  // 地址簿
+  rpc ListAddress (ListAddressReq) returns (common.Res) {
+    option (google.api.http) = {
+      get: "/v1/user/address/list"
+    };
+  }
+  rpc AddAddress (AddAddressReq) returns (common.Res) {
+    option (google.api.http) = {
+      post: "/v1/user/address/add"
+      body: "*"
+    };
+  }
+  rpc UpdateAddress (UpdateAddressReq) returns (common.Res) {
+    option (google.api.http) = {
+      post: "/v1/user/address/update"
+      body: "*"
+    };
+  }
+  rpc DelAddress (DelAddressReq) returns (common.Res) {
+    option (google.api.http) = {
+      post: "/v1/user/address/delete"
+      body: "*"
+    };
+  }
+
+  // 支付管理
+  rpc ListPaymentMethods (ListPaymentMethodsReq) returns (common.Res) {
+    option (google.api.http) = {
+      get: "/v1/user/payment/list"
+    };
+  }
+  rpc AddPaymentMethod (AddPaymentMethodReq) returns (common.Res) {
+    option (google.api.http) = {
+      post: "/v1/user/payment/add"
+      body: "*"
+    };
+  }
+  rpc UpdatePaymentMethod (UpdatePaymentMethodReq) returns (common.Res) {
+    option (google.api.http) = {
+      post: "/v1/user/payment/update"
+      body: "*"
+    };
+  }
+  rpc DelPaymentMethod (DelPaymentMethodReq) returns (common.Res) {
+    option (google.api.http) = {
+      post: "/v1/user/payment/delete"
+      body: "*"
+    };
+  }
+}
+
+message ListAddressReq {
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+}
+
+message AddAddressReq {
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+  string coinName = 2 [(validate.rules).string = {pattern: "^[A-Z0-9-]+$", min_len: 1, ignore_empty: false}];
+  string address = 3 [(validate.rules).string = {pattern: "^[a-zA-Z0-9]+$", min_len: 1, ignore_empty: false}];
+  string remark = 4 [(validate.rules).string = {min_len: 0, ignore_empty: true}];
+}
+
+message DelAddressReq {
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+  uint64 id = 2 [(validate.rules).uint64 = {gt: 0}];
+}
+
+message UpdateAddressReq {
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+  string coinName = 2 [(validate.rules).string = {pattern: "^[A-Z0-9-]+$", min_len: 1, ignore_empty: false}];
+  string address = 3 [(validate.rules).string = {pattern: "^[a-zA-Z0-9]+$", min_len: 1, ignore_empty: false}];
+  string remark = 4 [(validate.rules).string = {min_len: 0, ignore_empty: true}];
+}
+
+message ListPaymentMethodsReq {
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+}
+
+message DelPaymentMethodReq {
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+  uint64 id = 2 [(validate.rules).uint64 = {gt: 0}];
+}
+
+message AddPaymentMethodReq {
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+  string method = 2 [(validate.rules).string = {in: ["bankcard", "wechat", "alipay", "e_cny"]}];
+  string realName = 3 [(validate.rules).string = {pattern: "^[a-zA-Z]+$", min_len: 1, ignore_empty: false}];
+  string cardNo = 4 [(validate.rules).string = {pattern: "^[0-9]+$", min_len: 1, ignore_empty: false}];
+  string openBank = 5 [(validate.rules).string = {pattern: "^[a-zA-Z0-9]+$", min_len: 1, ignore_empty: false}];
+  string bankBranch = 6 [(validate.rules).string = {pattern: "^[a-zA-Z0-9]+$", min_len: 1, ignore_empty: false}];
+  string nickname = 7 [(validate.rules).string = {pattern: "^[a-zA-Z0-9]+$", min_len: 1, ignore_empty: false}];
+  string qrcodeUrl = 8 [(validate.rules).string = {pattern: "^(http|https)://[^\\s]+$"}];
+  string eCnyNo = 9 [(validate.rules).string = {pattern: "^[0-9]+$", min_len: 1, ignore_empty: false}];
+}
+
+message UpdatePaymentMethodReq {
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+  string method = 2 [(validate.rules).string = {in: ["bankcard", "wechat", "alipay", "e_cny"]}];
+  string realName = 3 [(validate.rules).string = {pattern: "^[a-zA-Z]+$", min_len: 1, ignore_empty: false}];
+  string cardNo = 4 [(validate.rules).string = {pattern: "^[0-9]+$", min_len: 1, ignore_empty: false}];
+  string openBank = 5 [(validate.rules).string = {pattern: "^[a-zA-Z0-9]+$", min_len: 1, ignore_empty: false}];
+  string bankBranch = 6 [(validate.rules).string = {pattern: "^[a-zA-Z0-9]+$", min_len: 1, ignore_empty: false}];
+  string nickname = 7 [(validate.rules).string = {pattern: "^[a-zA-Z0-9]+$", min_len: 1, ignore_empty: false}];
+  string qrcodeUrl = 8 [(validate.rules).string = {pattern: "^(http|https)://[^\\s]+$"}];
+  string eCnyNo = 9 [(validate.rules).string = {pattern: "^[0-9]+$", min_len: 1, ignore_empty: false}];
+}
+
+message RegisterAccountReq {
+  // 用户名，长度必须在 6 到 32 个字符之间，不允许包含空格
+  string usr = 1 [(validate.rules).string = {min_len: 6, max_len: 32, pattern: "^[^\\s]+$", ignore_empty: false}];
+  // 密码，长度必须在 60 到 100 个字符之间，不允许包含空格
+  string pwd = 2 [(validate.rules).string = {min_len: 60, max_len: 100, pattern: "^[^\\s]+$", ignore_empty: false}];
+  // 语言代码，必须为两个小写字母的 ISO 639-1 语言代码
+  string lang = 3 [(validate.rules).string = {pattern: "^[a-z]{2}$", ignore_empty: false}];
+  // 设备 ID，必须仅包含大小写字母、数字和下划线
+  string deviceId = 4 [(validate.rules).string = {pattern: "^[a-zA-Z0-9_]+$", ignore_empty: false}];
+  // 时区，必须为合法的时区格式，例如 "Asia/Shanghai"
+  string timeZone = 5 [(validate.rules).string = {pattern: "^[A-Za-z_]+/[A-Za-z_]+$", ignore_empty: false}];
+  // 货币代码，必须为指定的合法货币代码，且必须为大写
+  string currency = 6 [(validate.rules).string = {in: ["CNY", "USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "HKD", "NZD", "KRW", "IDR", "VND", "TWD", "SGD", "BRL", "MOP", "USDT"], ignore_empty: false}];
+}
+
+message GetAccountInfoReq {
+  // 用户 ID，必须为大于 0 的正整数
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+}
+
+message UpdateAccountReq {
+  // 用户 ID，必须为大于 0 的正整数
+  uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
+  // 语言代码，必须为两个小写字母的 ISO 639-1 语言代码
+  string lang = 2 [(validate.rules).string = {pattern: "^[a-z]{2}$", ignore_empty: false}];
+  // 货币代码，必须为指定的合法货币代码，服务端将强制统一转换为大写
+  string currency = 3 [(validate.rules).string = {in: ["CNY", "USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "HKD", "NZD", "KRW", "IDR", "VND", "TWD", "SGD", "BRL", "MOP", "USDT"], ignore_empty: false}];
+  // 安全密码，长度必须在 60 到 100 个字符之间，不允许包含空格
+  string secPwd = 4 [(validate.rules).string = {min_len: 60, max_len: 100, pattern: "^[^\\s]+$", ignore_empty: false}];
+}

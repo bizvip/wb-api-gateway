@@ -1,0 +1,366 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: Gateway API
+    description: 全部http接口
+    version: 0.0.1
+paths:
+    /v1/user/account/info:
+        get:
+            tags:
+                - Gateway
+            description: 通用读取账户信息
+            operationId: Gateway_GetAccountInfo
+            parameters:
+                - name: uid
+                  in: query
+                  description: 用户 ID，必须为大于 0 的正整数
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/account/info/{uid}:
+        get:
+            tags:
+                - Gateway
+            description: 通用读取账户信息
+            operationId: Gateway_GetAccountInfo
+            parameters:
+                - name: uid
+                  in: path
+                  description: 用户 ID，必须为大于 0 的正整数
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/account/register:
+        post:
+            tags:
+                - Gateway
+            description: 注册账户
+            operationId: Gateway_RegisterAccount
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.RegisterAccountReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/account/update:
+        post:
+            tags:
+                - Gateway
+            description: 更新用户账户数据
+            operationId: Gateway_UpdateAccount
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.UpdateAccountReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/address/add:
+        post:
+            tags:
+                - Gateway
+            operationId: Gateway_AddAddress
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.AddAddressReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/address/delete:
+        post:
+            tags:
+                - Gateway
+            operationId: Gateway_DelAddress
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.DelAddressReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/address/list:
+        get:
+            tags:
+                - Gateway
+            description: 地址簿
+            operationId: Gateway_ListAddress
+            parameters:
+                - name: uid
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/address/update:
+        post:
+            tags:
+                - Gateway
+            operationId: Gateway_UpdateAddress
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.UpdateAddressReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/payment/add:
+        post:
+            tags:
+                - Gateway
+            operationId: Gateway_AddPaymentMethod
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.AddPaymentMethodReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/payment/delete:
+        post:
+            tags:
+                - Gateway
+            operationId: Gateway_DelPaymentMethod
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.DelPaymentMethodReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/payment/list:
+        get:
+            tags:
+                - Gateway
+            description: 支付管理
+            operationId: Gateway_ListPaymentMethods
+            parameters:
+                - name: uid
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+    /v1/user/payment/update:
+        post:
+            tags:
+                - Gateway
+            operationId: Gateway_UpdatePaymentMethod
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.UpdatePaymentMethodReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Res'
+components:
+    schemas:
+        api.common.Res:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: uint32
+                msg:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/google.protobuf.Any'
+        api.http.v1.AddAddressReq:
+            type: object
+            properties:
+                uid:
+                    type: string
+                coinName:
+                    type: string
+                address:
+                    type: string
+                remark:
+                    type: string
+        api.http.v1.AddPaymentMethodReq:
+            type: object
+            properties:
+                uid:
+                    type: string
+                method:
+                    type: string
+                realName:
+                    type: string
+                cardNo:
+                    type: string
+                openBank:
+                    type: string
+                bankBranch:
+                    type: string
+                nickname:
+                    type: string
+                qrcodeUrl:
+                    type: string
+                eCnyNo:
+                    type: string
+        api.http.v1.DelAddressReq:
+            type: object
+            properties:
+                uid:
+                    type: string
+                id:
+                    type: string
+        api.http.v1.DelPaymentMethodReq:
+            type: object
+            properties:
+                uid:
+                    type: string
+                id:
+                    type: string
+        api.http.v1.RegisterAccountReq:
+            type: object
+            properties:
+                usr:
+                    type: string
+                    description: 用户名，长度必须在 6 到 32 个字符之间，不允许包含空格
+                pwd:
+                    type: string
+                    description: 密码，长度必须在 60 到 100 个字符之间，不允许包含空格
+                lang:
+                    type: string
+                    description: 语言代码，必须为两个小写字母的 ISO 639-1 语言代码
+                deviceId:
+                    type: string
+                    description: 设备 ID，必须仅包含大小写字母、数字和下划线
+                timeZone:
+                    type: string
+                    description: 时区，必须为合法的时区格式，例如 "Asia/Shanghai"
+                currency:
+                    type: string
+                    description: 货币代码，必须为指定的合法货币代码，且必须为大写
+        api.http.v1.UpdateAccountReq:
+            type: object
+            properties:
+                uid:
+                    type: string
+                    description: 用户 ID，必须为大于 0 的正整数
+                lang:
+                    type: string
+                    description: 语言代码，必须为两个小写字母的 ISO 639-1 语言代码
+                currency:
+                    type: string
+                    description: 货币代码，必须为指定的合法货币代码，服务端将强制统一转换为大写
+                secPwd:
+                    type: string
+                    description: 安全密码，长度必须在 60 到 100 个字符之间，不允许包含空格
+        api.http.v1.UpdateAddressReq:
+            type: object
+            properties:
+                uid:
+                    type: string
+                coinName:
+                    type: string
+                address:
+                    type: string
+                remark:
+                    type: string
+        api.http.v1.UpdatePaymentMethodReq:
+            type: object
+            properties:
+                uid:
+                    type: string
+                method:
+                    type: string
+                realName:
+                    type: string
+                cardNo:
+                    type: string
+                openBank:
+                    type: string
+                bankBranch:
+                    type: string
+                nickname:
+                    type: string
+                qrcodeUrl:
+                    type: string
+                eCnyNo:
+                    type: string
+        google.protobuf.Any:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+tags:
+    - name: Gateway
