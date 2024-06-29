@@ -3,82 +3,111 @@ package service
 import (
 	"context"
 
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/golang/protobuf/ptypes/empty"
+
 	"api_gateway_service/api/common"
-	pb "api_gateway_service/api/http/v1"
+	v1 "api_gateway_service/api/http/v1"
 )
 
-// GatewayService is the service for handling gateway-related operations.
 type GatewayService struct {
-	pb.UnimplementedGatewayServer
+	v1.UnimplementedAccountServer
+	log *log.Helper
 }
 
-// NewGatewayService creates a new GatewayService.
-func NewGatewayService() *GatewayService {
-	return &GatewayService{}
+func NewGatewayService(logger log.Logger) *GatewayService {
+	return &GatewayService{
+		log: log.NewHelper(logger),
+	}
 }
 
-// RegisterAccount handles the registration of a new account.
-func (s *GatewayService) RegisterAccount(ctx context.Context, req *pb.RegisterAccountReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Account registered successfully"}, nil
+// RegisterAccount 注册账户
+func (s *GatewayService) RegisterAccount(ctx context.Context, req *v1.RegisterAccountRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// GetAccountInfo retrieves account information.
-func (s *GatewayService) GetAccountInfo(ctx context.Context, req *pb.GetAccountInfoReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Account info retrieved successfully"}, nil
+// GetAccount 读取账户
+func (s *GatewayService) GetAccount(ctx context.Context, req *v1.GetAccountRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// UpdateAccount updates account information.
-func (s *GatewayService) UpdateAccount(ctx context.Context, req *pb.UpdateAccountReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Account updated successfully"}, nil
+// UpdateAccount 更新账户
+func (s *GatewayService) UpdateAccount(ctx context.Context, req *v1.UpdateAccountRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// ListAddress lists the addresses.
-func (s *GatewayService) ListAddress(ctx context.Context, req *pb.ListAddressReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Address list retrieved successfully"}, nil
+// ListAddresses 地址簿列表
+func (s *GatewayService) ListAddresses(ctx context.Context, req *empty.Empty) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// AddAddress adds a new address.
-func (s *GatewayService) AddAddress(ctx context.Context, req *pb.AddAddressReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Address added successfully"}, nil
+// GetAddress 读取单条地址
+func (s *GatewayService) GetAddress(ctx context.Context, req *v1.GetAddressRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// UpdateAddress updates an existing address.
-func (s *GatewayService) UpdateAddress(ctx context.Context, req *pb.UpdateAddressReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Address updated successfully"}, nil
+// AddAddress 添加地址
+func (s *GatewayService) AddAddress(ctx context.Context, req *v1.AddAddressRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// DelAddress deletes an address.
-func (s *GatewayService) DelAddress(ctx context.Context, req *pb.DelAddressReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Address deleted successfully"}, nil
+// UpdateAddress 更新地址
+func (s *GatewayService) UpdateAddress(ctx context.Context, req *v1.UpdateAddressRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// ListPaymentMethods lists the payment methods.
-func (s *GatewayService) ListPaymentMethods(ctx context.Context, req *pb.ListPaymentMethodsReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Payment methods list retrieved successfully"}, nil
+// DeleteAddress 删除地址
+func (s *GatewayService) DeleteAddress(ctx context.Context, req *v1.DeleteAddressRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// AddPaymentMethod adds a new payment method.
-func (s *GatewayService) AddPaymentMethod(ctx context.Context, req *pb.AddPaymentMethodReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Payment method added successfully"}, nil
+// ListReceivingMethods 收款方式列表
+func (s *GatewayService) ListReceivingMethods(ctx context.Context, req *empty.Empty) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// UpdatePaymentMethod updates an existing payment method.
-func (s *GatewayService) UpdatePaymentMethod(ctx context.Context, req *pb.UpdatePaymentMethodReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Payment method updated successfully"}, nil
+// GetReceivingMethod 获取单个收款方式
+func (s *GatewayService) GetReceivingMethod(ctx context.Context, req *v1.GetReceivingMethodRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }
 
-// DelPaymentMethod deletes a payment method.
-func (s *GatewayService) DelPaymentMethod(ctx context.Context, req *pb.DelPaymentMethodReq) (*common.Res, error) {
-	// 这里添加处理逻辑，例如调用后端服务或者处理数据库操作
-	return &common.Res{Code: 0, Msg: "Payment method deleted successfully"}, nil
+// AddReceivingMethod 添加收款方式
+func (s *GatewayService) AddReceivingMethod(ctx context.Context, req *v1.AddReceivingMethodRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
+}
+
+// UpdateReceivingMethod 更新收款方式
+func (s *GatewayService) UpdateReceivingMethod(ctx context.Context, req *v1.UpdateReceivingMethodRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
+}
+
+// DeleteReceivingMethod 删除收款方式
+func (s *GatewayService) DeleteReceivingMethod(ctx context.Context, req *v1.DeleteReceivingMethodRequest) (*common.Reply, error) {
+	// 调用 gRPC 服务，转发请求
+	// 这里填充转发逻辑
+	return &common.Reply{Code: 0, Msg: "", Data: nil}, nil
 }

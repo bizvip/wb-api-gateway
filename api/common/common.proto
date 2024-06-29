@@ -9,7 +9,7 @@ option objc_class_prefix = "ApiCommon";
 
 import "google/protobuf/any.proto";
 
-message Res {
+message Reply {
   uint32 code = 1;
   string msg = 2;
   google.protobuf.Any data = 3;

@@ -3,39 +3,39 @@
 
 openapi: 3.0.3
 info:
-    title: Gateway API
-    description: 全部http接口
+    title: ""
     version: 0.0.1
 paths:
-    /v1/user/account/info:
-        get:
+    /v1/user/accounts:
+        post:
             tags:
-                - Gateway
-            description: 通用读取账户信息
-            operationId: Gateway_GetAccountInfo
-            parameters:
-                - name: uid
-                  in: query
-                  description: 用户 ID，必须为大于 0 的正整数
-                  schema:
-                    type: string
+                - Account
+            summary: 注册账户
+            description: 为新用户注册一个账户
+            operationId: Account_RegisterAccount
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.RegisterAccountRequest'
+                required: true
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/account/info/{uid}:
+                                $ref: '#/components/schemas/api.common.Reply'
+    /v1/user/accounts/{uid}:
         get:
             tags:
-                - Gateway
-            description: 通用读取账户信息
-            operationId: Gateway_GetAccountInfo
+                - Account
+            summary: 读取账户
+            description: 获取指定用户ID的账户信息
+            operationId: Account_GetAccount
             parameters:
                 - name: uid
                   in: path
-                  description: 用户 ID，必须为大于 0 的正整数
                   required: true
                   schema:
                     type: string
@@ -45,18 +45,25 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/account/register:
-        post:
+                                $ref: '#/components/schemas/api.common.Reply'
+        put:
             tags:
-                - Gateway
-            description: 注册账户
-            operationId: Gateway_RegisterAccount
+                - Account
+            summary: 更新账户
+            description: 更新用户的账户信息
+            operationId: Account_UpdateAccount
+            parameters:
+                - name: uid
+                  in: path
+                  description: 用户 ID，必须为大于 0 的正整数
+                  required: true
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.http.v1.RegisterAccountReq'
+                            $ref: '#/components/schemas/api.http.v1.UpdateAccountRequest'
                 required: true
             responses:
                 "200":
@@ -64,69 +71,199 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/account/update:
-        post:
-            tags:
-                - Gateway
-            description: 更新用户账户数据
-            operationId: Gateway_UpdateAccount
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.http.v1.UpdateAccountReq'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/address/add:
-        post:
-            tags:
-                - Gateway
-            operationId: Gateway_AddAddress
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.http.v1.AddAddressReq'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/address/delete:
-        post:
-            tags:
-                - Gateway
-            operationId: Gateway_DelAddress
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.http.v1.DelAddressReq'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/address/list:
+                                $ref: '#/components/schemas/api.common.Reply'
+    /v1/user/addresses:
         get:
             tags:
-                - Gateway
-            description: 地址簿
-            operationId: Gateway_ListAddress
+                - Addresses
+            summary: 获取地址簿列表
+            description: 获取用户的所有地址簿条目
+            operationId: Addresses_ListAddresses
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Reply'
+        post:
+            tags:
+                - Addresses
+            summary: 添加地址
+            description: 为用户添加新的地址簿条目
+            operationId: Addresses_AddAddress
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.AddAddressRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Reply'
+    /v1/user/addresses/{id}:
+        get:
+            tags:
+                - Addresses
+            summary: 获取单条地址
+            description: 获取用户的单条地址簿条目
+            operationId: Addresses_GetAddress
             parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Reply'
+        put:
+            tags:
+                - Addresses
+            summary: 更新地址
+            description: 更新用户的地址簿条目
+            operationId: Addresses_UpdateAddress
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.UpdateAddressRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Reply'
+        delete:
+            tags:
+                - Addresses
+            summary: 删除地址
+            description: 删除用户的地址簿条目
+            operationId: Addresses_DeleteAddress
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Reply'
+    /v1/user/receiving-methods:
+        get:
+            tags:
+                - ReceivingMethods
+                - ReceivingMethods
+            summary: 获取收款方式列表
+            description: 获取用户的所有收款方式列表
+            operationId: ReceivingMethods_ListReceivingMethods
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Reply'
+        post:
+            tags:
+                - ReceivingMethods
+                - ReceivingMethods
+            summary: 添加收款方式
+            description: 为用户添加新的收款方式
+            operationId: ReceivingMethods_AddReceivingMethod
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.AddReceivingMethodRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Reply'
+    /v1/user/receiving-methods/{id}:
+        get:
+            tags:
+                - ReceivingMethods
+                - ReceivingMethods
+            summary: 获取单个收款方式
+            description: 获取指定ID的收款方式
+            operationId: ReceivingMethods_GetReceivingMethod
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Reply'
+        put:
+            tags:
+                - ReceivingMethods
+                - ReceivingMethods
+            summary: 更新收款方式
+            description: 更新用户的收款方式信息
+            operationId: ReceivingMethods_UpdateReceivingMethod
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.http.v1.UpdateReceivingMethodRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.common.Reply'
+        delete:
+            tags:
+                - ReceivingMethods
+                - ReceivingMethods
+            summary: 删除收款方式
+            description: 删除用户的收款方式
+            operationId: ReceivingMethods_DeleteReceivingMethod
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
                 - name: uid
                   in: query
                   schema:
@@ -137,100 +274,10 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/address/update:
-        post:
-            tags:
-                - Gateway
-            operationId: Gateway_UpdateAddress
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.http.v1.UpdateAddressReq'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/payment/add:
-        post:
-            tags:
-                - Gateway
-            operationId: Gateway_AddPaymentMethod
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.http.v1.AddPaymentMethodReq'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/payment/delete:
-        post:
-            tags:
-                - Gateway
-            operationId: Gateway_DelPaymentMethod
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.http.v1.DelPaymentMethodReq'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/payment/list:
-        get:
-            tags:
-                - Gateway
-            description: 支付管理
-            operationId: Gateway_ListPaymentMethods
-            parameters:
-                - name: uid
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.common.Res'
-    /v1/user/payment/update:
-        post:
-            tags:
-                - Gateway
-            operationId: Gateway_UpdatePaymentMethod
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.http.v1.UpdatePaymentMethodReq'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.common.Res'
+                                $ref: '#/components/schemas/api.common.Reply'
 components:
     schemas:
-        api.common.Res:
+        api.common.Reply:
             type: object
             properties:
                 code:
@@ -240,18 +287,16 @@ components:
                     type: string
                 data:
                     $ref: '#/components/schemas/google.protobuf.Any'
-        api.http.v1.AddAddressReq:
+        api.http.v1.AddAddressRequest:
             type: object
             properties:
-                uid:
-                    type: string
                 coinName:
                     type: string
                 address:
                     type: string
                 remark:
                     type: string
-        api.http.v1.AddPaymentMethodReq:
+        api.http.v1.AddReceivingMethodRequest:
             type: object
             properties:
                 uid:
@@ -272,21 +317,7 @@ components:
                     type: string
                 eCnyNo:
                     type: string
-        api.http.v1.DelAddressReq:
-            type: object
-            properties:
-                uid:
-                    type: string
-                id:
-                    type: string
-        api.http.v1.DelPaymentMethodReq:
-            type: object
-            properties:
-                uid:
-                    type: string
-                id:
-                    type: string
-        api.http.v1.RegisterAccountReq:
+        api.http.v1.RegisterAccountRequest:
             type: object
             properties:
                 usr:
@@ -307,7 +338,7 @@ components:
                 currency:
                     type: string
                     description: 货币代码，必须为指定的合法货币代码，且必须为大写
-        api.http.v1.UpdateAccountReq:
+        api.http.v1.UpdateAccountRequest:
             type: object
             properties:
                 uid:
@@ -322,10 +353,10 @@ components:
                 secPwd:
                     type: string
                     description: 安全密码，长度必须在 60 到 100 个字符之间，不允许包含空格
-        api.http.v1.UpdateAddressReq:
+        api.http.v1.UpdateAddressRequest:
             type: object
             properties:
-                uid:
+                id:
                     type: string
                 coinName:
                     type: string
@@ -333,9 +364,11 @@ components:
                     type: string
                 remark:
                     type: string
-        api.http.v1.UpdatePaymentMethodReq:
+        api.http.v1.UpdateReceivingMethodRequest:
             type: object
             properties:
+                id:
+                    type: string
                 uid:
                     type: string
                 method:
@@ -363,4 +396,9 @@ components:
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 tags:
-    - name: Gateway
+    - name: Account
+      description: 用户账户
+    - name: Addresses
+      description: 地址簿
+    - name: ReceivingMethods
+      description: 收款方式

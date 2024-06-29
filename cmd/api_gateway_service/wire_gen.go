@@ -22,7 +22,7 @@ import (
 
 // wireApp init kratos application.
 func wireApp(confServer *conf.Server, logger log.Logger) (*kratos.App, func(), error) {
-	gatewayService := service.NewGatewayService()
+	gatewayService := service.NewGatewayService(logger)
 	grpcServer := server.NewGRPCServer(confServer, gatewayService, logger)
 	httpServer := server.NewHTTPServer(confServer, gatewayService, logger)
 	app := newApp(logger, grpcServer, httpServer)

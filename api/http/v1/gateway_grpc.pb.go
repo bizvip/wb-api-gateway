@@ -12,6 +12,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -20,484 +21,690 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	Gateway_RegisterAccount_FullMethodName     = "/api.http.v1.Gateway/RegisterAccount"
-	Gateway_GetAccountInfo_FullMethodName      = "/api.http.v1.Gateway/GetAccountInfo"
-	Gateway_UpdateAccount_FullMethodName       = "/api.http.v1.Gateway/UpdateAccount"
-	Gateway_ListAddress_FullMethodName         = "/api.http.v1.Gateway/ListAddress"
-	Gateway_AddAddress_FullMethodName          = "/api.http.v1.Gateway/AddAddress"
-	Gateway_UpdateAddress_FullMethodName       = "/api.http.v1.Gateway/UpdateAddress"
-	Gateway_DelAddress_FullMethodName          = "/api.http.v1.Gateway/DelAddress"
-	Gateway_ListPaymentMethods_FullMethodName  = "/api.http.v1.Gateway/ListPaymentMethods"
-	Gateway_AddPaymentMethod_FullMethodName    = "/api.http.v1.Gateway/AddPaymentMethod"
-	Gateway_UpdatePaymentMethod_FullMethodName = "/api.http.v1.Gateway/UpdatePaymentMethod"
-	Gateway_DelPaymentMethod_FullMethodName    = "/api.http.v1.Gateway/DelPaymentMethod"
+	Account_RegisterAccount_FullMethodName = "/api.http.v1.Account/RegisterAccount"
+	Account_GetAccount_FullMethodName      = "/api.http.v1.Account/GetAccount"
+	Account_UpdateAccount_FullMethodName   = "/api.http.v1.Account/UpdateAccount"
 )
 
-// GatewayClient is the client API for Gateway service.
+// AccountClient is the client API for Account service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// 全部http接口
-type GatewayClient interface {
+// 用户账户
+type AccountClient interface {
 	// 注册账户
-	RegisterAccount(ctx context.Context, in *RegisterAccountReq, opts ...grpc.CallOption) (*common.Res, error)
-	// 通用读取账户信息
-	GetAccountInfo(ctx context.Context, in *GetAccountInfoReq, opts ...grpc.CallOption) (*common.Res, error)
-	// 更新用户账户数据
-	UpdateAccount(ctx context.Context, in *UpdateAccountReq, opts ...grpc.CallOption) (*common.Res, error)
-	// 地址簿
-	ListAddress(ctx context.Context, in *ListAddressReq, opts ...grpc.CallOption) (*common.Res, error)
-	AddAddress(ctx context.Context, in *AddAddressReq, opts ...grpc.CallOption) (*common.Res, error)
-	UpdateAddress(ctx context.Context, in *UpdateAddressReq, opts ...grpc.CallOption) (*common.Res, error)
-	DelAddress(ctx context.Context, in *DelAddressReq, opts ...grpc.CallOption) (*common.Res, error)
-	// 支付管理
-	ListPaymentMethods(ctx context.Context, in *ListPaymentMethodsReq, opts ...grpc.CallOption) (*common.Res, error)
-	AddPaymentMethod(ctx context.Context, in *AddPaymentMethodReq, opts ...grpc.CallOption) (*common.Res, error)
-	UpdatePaymentMethod(ctx context.Context, in *UpdatePaymentMethodReq, opts ...grpc.CallOption) (*common.Res, error)
-	DelPaymentMethod(ctx context.Context, in *DelPaymentMethodReq, opts ...grpc.CallOption) (*common.Res, error)
+	RegisterAccount(ctx context.Context, in *RegisterAccountRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	// 读取账户
+	GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	// 更新账户
+	UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*common.Reply, error)
 }
 
-type gatewayClient struct {
+type accountClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGatewayClient(cc grpc.ClientConnInterface) GatewayClient {
-	return &gatewayClient{cc}
+func NewAccountClient(cc grpc.ClientConnInterface) AccountClient {
+	return &accountClient{cc}
 }
 
-func (c *gatewayClient) RegisterAccount(ctx context.Context, in *RegisterAccountReq, opts ...grpc.CallOption) (*common.Res, error) {
+func (c *accountClient) RegisterAccount(ctx context.Context, in *RegisterAccountRequest, opts ...grpc.CallOption) (*common.Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_RegisterAccount_FullMethodName, in, out, cOpts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, Account_RegisterAccount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gatewayClient) GetAccountInfo(ctx context.Context, in *GetAccountInfoReq, opts ...grpc.CallOption) (*common.Res, error) {
+func (c *accountClient) GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*common.Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_GetAccountInfo_FullMethodName, in, out, cOpts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, Account_GetAccount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gatewayClient) UpdateAccount(ctx context.Context, in *UpdateAccountReq, opts ...grpc.CallOption) (*common.Res, error) {
+func (c *accountClient) UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*common.Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_UpdateAccount_FullMethodName, in, out, cOpts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, Account_UpdateAccount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gatewayClient) ListAddress(ctx context.Context, in *ListAddressReq, opts ...grpc.CallOption) (*common.Res, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_ListAddress_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) AddAddress(ctx context.Context, in *AddAddressReq, opts ...grpc.CallOption) (*common.Res, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_AddAddress_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) UpdateAddress(ctx context.Context, in *UpdateAddressReq, opts ...grpc.CallOption) (*common.Res, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_UpdateAddress_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) DelAddress(ctx context.Context, in *DelAddressReq, opts ...grpc.CallOption) (*common.Res, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_DelAddress_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) ListPaymentMethods(ctx context.Context, in *ListPaymentMethodsReq, opts ...grpc.CallOption) (*common.Res, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_ListPaymentMethods_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) AddPaymentMethod(ctx context.Context, in *AddPaymentMethodReq, opts ...grpc.CallOption) (*common.Res, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_AddPaymentMethod_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) UpdatePaymentMethod(ctx context.Context, in *UpdatePaymentMethodReq, opts ...grpc.CallOption) (*common.Res, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_UpdatePaymentMethod_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) DelPaymentMethod(ctx context.Context, in *DelPaymentMethodReq, opts ...grpc.CallOption) (*common.Res, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Res)
-	err := c.cc.Invoke(ctx, Gateway_DelPaymentMethod_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// GatewayServer is the server API for Gateway service.
-// All implementations must embed UnimplementedGatewayServer
+// AccountServer is the server API for Account service.
+// All implementations must embed UnimplementedAccountServer
 // for forward compatibility
 //
-// 全部http接口
-type GatewayServer interface {
+// 用户账户
+type AccountServer interface {
 	// 注册账户
-	RegisterAccount(context.Context, *RegisterAccountReq) (*common.Res, error)
-	// 通用读取账户信息
-	GetAccountInfo(context.Context, *GetAccountInfoReq) (*common.Res, error)
-	// 更新用户账户数据
-	UpdateAccount(context.Context, *UpdateAccountReq) (*common.Res, error)
-	// 地址簿
-	ListAddress(context.Context, *ListAddressReq) (*common.Res, error)
-	AddAddress(context.Context, *AddAddressReq) (*common.Res, error)
-	UpdateAddress(context.Context, *UpdateAddressReq) (*common.Res, error)
-	DelAddress(context.Context, *DelAddressReq) (*common.Res, error)
-	// 支付管理
-	ListPaymentMethods(context.Context, *ListPaymentMethodsReq) (*common.Res, error)
-	AddPaymentMethod(context.Context, *AddPaymentMethodReq) (*common.Res, error)
-	UpdatePaymentMethod(context.Context, *UpdatePaymentMethodReq) (*common.Res, error)
-	DelPaymentMethod(context.Context, *DelPaymentMethodReq) (*common.Res, error)
-	mustEmbedUnimplementedGatewayServer()
+	RegisterAccount(context.Context, *RegisterAccountRequest) (*common.Reply, error)
+	// 读取账户
+	GetAccount(context.Context, *GetAccountRequest) (*common.Reply, error)
+	// 更新账户
+	UpdateAccount(context.Context, *UpdateAccountRequest) (*common.Reply, error)
+	mustEmbedUnimplementedAccountServer()
 }
 
-// UnimplementedGatewayServer must be embedded to have forward compatible implementations.
-type UnimplementedGatewayServer struct {
+// UnimplementedAccountServer must be embedded to have forward compatible implementations.
+type UnimplementedAccountServer struct {
 }
 
-func (UnimplementedGatewayServer) RegisterAccount(context.Context, *RegisterAccountReq) (*common.Res, error) {
+func (UnimplementedAccountServer) RegisterAccount(context.Context, *RegisterAccountRequest) (*common.Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterAccount not implemented")
 }
-func (UnimplementedGatewayServer) GetAccountInfo(context.Context, *GetAccountInfoReq) (*common.Res, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAccountInfo not implemented")
+func (UnimplementedAccountServer) GetAccount(context.Context, *GetAccountRequest) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAccount not implemented")
 }
-func (UnimplementedGatewayServer) UpdateAccount(context.Context, *UpdateAccountReq) (*common.Res, error) {
+func (UnimplementedAccountServer) UpdateAccount(context.Context, *UpdateAccountRequest) (*common.Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAccount not implemented")
 }
-func (UnimplementedGatewayServer) ListAddress(context.Context, *ListAddressReq) (*common.Res, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListAddress not implemented")
-}
-func (UnimplementedGatewayServer) AddAddress(context.Context, *AddAddressReq) (*common.Res, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddAddress not implemented")
-}
-func (UnimplementedGatewayServer) UpdateAddress(context.Context, *UpdateAddressReq) (*common.Res, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateAddress not implemented")
-}
-func (UnimplementedGatewayServer) DelAddress(context.Context, *DelAddressReq) (*common.Res, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DelAddress not implemented")
-}
-func (UnimplementedGatewayServer) ListPaymentMethods(context.Context, *ListPaymentMethodsReq) (*common.Res, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListPaymentMethods not implemented")
-}
-func (UnimplementedGatewayServer) AddPaymentMethod(context.Context, *AddPaymentMethodReq) (*common.Res, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddPaymentMethod not implemented")
-}
-func (UnimplementedGatewayServer) UpdatePaymentMethod(context.Context, *UpdatePaymentMethodReq) (*common.Res, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdatePaymentMethod not implemented")
-}
-func (UnimplementedGatewayServer) DelPaymentMethod(context.Context, *DelPaymentMethodReq) (*common.Res, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DelPaymentMethod not implemented")
-}
-func (UnimplementedGatewayServer) mustEmbedUnimplementedGatewayServer() {}
+func (UnimplementedAccountServer) mustEmbedUnimplementedAccountServer() {}
 
-// UnsafeGatewayServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GatewayServer will
+// UnsafeAccountServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AccountServer will
 // result in compilation errors.
-type UnsafeGatewayServer interface {
-	mustEmbedUnimplementedGatewayServer()
+type UnsafeAccountServer interface {
+	mustEmbedUnimplementedAccountServer()
 }
 
-func RegisterGatewayServer(s grpc.ServiceRegistrar, srv GatewayServer) {
-	s.RegisterService(&Gateway_ServiceDesc, srv)
+func RegisterAccountServer(s grpc.ServiceRegistrar, srv AccountServer) {
+	s.RegisterService(&Account_ServiceDesc, srv)
 }
 
-func _Gateway_RegisterAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterAccountReq)
+func _Account_RegisterAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterAccountRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GatewayServer).RegisterAccount(ctx, in)
+		return srv.(AccountServer).RegisterAccount(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Gateway_RegisterAccount_FullMethodName,
+		FullMethod: Account_RegisterAccount_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).RegisterAccount(ctx, req.(*RegisterAccountReq))
+		return srv.(AccountServer).RegisterAccount(ctx, req.(*RegisterAccountRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_GetAccountInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAccountInfoReq)
+func _Account_GetAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAccountRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GatewayServer).GetAccountInfo(ctx, in)
+		return srv.(AccountServer).GetAccount(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Gateway_GetAccountInfo_FullMethodName,
+		FullMethod: Account_GetAccount_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).GetAccountInfo(ctx, req.(*GetAccountInfoReq))
+		return srv.(AccountServer).GetAccount(ctx, req.(*GetAccountRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_UpdateAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateAccountReq)
+func _Account_UpdateAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAccountRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GatewayServer).UpdateAccount(ctx, in)
+		return srv.(AccountServer).UpdateAccount(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Gateway_UpdateAccount_FullMethodName,
+		FullMethod: Account_UpdateAccount_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).UpdateAccount(ctx, req.(*UpdateAccountReq))
+		return srv.(AccountServer).UpdateAccount(ctx, req.(*UpdateAccountRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_ListAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListAddressReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).ListAddress(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_ListAddress_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).ListAddress(ctx, req.(*ListAddressReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_AddAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddAddressReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).AddAddress(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_AddAddress_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).AddAddress(ctx, req.(*AddAddressReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_UpdateAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateAddressReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).UpdateAddress(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_UpdateAddress_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).UpdateAddress(ctx, req.(*UpdateAddressReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_DelAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DelAddressReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).DelAddress(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_DelAddress_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).DelAddress(ctx, req.(*DelAddressReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_ListPaymentMethods_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListPaymentMethodsReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).ListPaymentMethods(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_ListPaymentMethods_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).ListPaymentMethods(ctx, req.(*ListPaymentMethodsReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_AddPaymentMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddPaymentMethodReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).AddPaymentMethod(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_AddPaymentMethod_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).AddPaymentMethod(ctx, req.(*AddPaymentMethodReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_UpdatePaymentMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdatePaymentMethodReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).UpdatePaymentMethod(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_UpdatePaymentMethod_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).UpdatePaymentMethod(ctx, req.(*UpdatePaymentMethodReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_DelPaymentMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DelPaymentMethodReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).DelPaymentMethod(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_DelPaymentMethod_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServer).DelPaymentMethod(ctx, req.(*DelPaymentMethodReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-// Gateway_ServiceDesc is the grpc.ServiceDesc for Gateway service.
+// Account_ServiceDesc is the grpc.ServiceDesc for Account service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Gateway_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.http.v1.Gateway",
-	HandlerType: (*GatewayServer)(nil),
+var Account_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.http.v1.Account",
+	HandlerType: (*AccountServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "RegisterAccount",
-			Handler:    _Gateway_RegisterAccount_Handler,
+			Handler:    _Account_RegisterAccount_Handler,
 		},
 		{
-			MethodName: "GetAccountInfo",
-			Handler:    _Gateway_GetAccountInfo_Handler,
+			MethodName: "GetAccount",
+			Handler:    _Account_GetAccount_Handler,
 		},
 		{
 			MethodName: "UpdateAccount",
-			Handler:    _Gateway_UpdateAccount_Handler,
+			Handler:    _Account_UpdateAccount_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "http/v1/gateway.proto",
+}
+
+const (
+	Addresses_ListAddresses_FullMethodName = "/api.http.v1.Addresses/ListAddresses"
+	Addresses_GetAddress_FullMethodName    = "/api.http.v1.Addresses/GetAddress"
+	Addresses_AddAddress_FullMethodName    = "/api.http.v1.Addresses/AddAddress"
+	Addresses_UpdateAddress_FullMethodName = "/api.http.v1.Addresses/UpdateAddress"
+	Addresses_DeleteAddress_FullMethodName = "/api.http.v1.Addresses/DeleteAddress"
+)
+
+// AddressesClient is the client API for Addresses service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// 地址簿
+type AddressesClient interface {
+	// 地址簿列表
+	ListAddresses(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*common.Reply, error)
+	// 读取单条地址
+	GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	// 添加地址
+	AddAddress(ctx context.Context, in *AddAddressRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	// 更新地址
+	UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	// 删除地址
+	DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*common.Reply, error)
+}
+
+type addressesClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewAddressesClient(cc grpc.ClientConnInterface) AddressesClient {
+	return &addressesClient{cc}
+}
+
+func (c *addressesClient) ListAddresses(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, Addresses_ListAddresses_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *addressesClient) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, Addresses_GetAddress_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *addressesClient) AddAddress(ctx context.Context, in *AddAddressRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, Addresses_AddAddress_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *addressesClient) UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, Addresses_UpdateAddress_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *addressesClient) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, Addresses_DeleteAddress_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// AddressesServer is the server API for Addresses service.
+// All implementations must embed UnimplementedAddressesServer
+// for forward compatibility
+//
+// 地址簿
+type AddressesServer interface {
+	// 地址簿列表
+	ListAddresses(context.Context, *emptypb.Empty) (*common.Reply, error)
+	// 读取单条地址
+	GetAddress(context.Context, *GetAddressRequest) (*common.Reply, error)
+	// 添加地址
+	AddAddress(context.Context, *AddAddressRequest) (*common.Reply, error)
+	// 更新地址
+	UpdateAddress(context.Context, *UpdateAddressRequest) (*common.Reply, error)
+	// 删除地址
+	DeleteAddress(context.Context, *DeleteAddressRequest) (*common.Reply, error)
+	mustEmbedUnimplementedAddressesServer()
+}
+
+// UnimplementedAddressesServer must be embedded to have forward compatible implementations.
+type UnimplementedAddressesServer struct {
+}
+
+func (UnimplementedAddressesServer) ListAddresses(context.Context, *emptypb.Empty) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAddresses not implemented")
+}
+func (UnimplementedAddressesServer) GetAddress(context.Context, *GetAddressRequest) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAddress not implemented")
+}
+func (UnimplementedAddressesServer) AddAddress(context.Context, *AddAddressRequest) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddAddress not implemented")
+}
+func (UnimplementedAddressesServer) UpdateAddress(context.Context, *UpdateAddressRequest) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAddress not implemented")
+}
+func (UnimplementedAddressesServer) DeleteAddress(context.Context, *DeleteAddressRequest) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAddress not implemented")
+}
+func (UnimplementedAddressesServer) mustEmbedUnimplementedAddressesServer() {}
+
+// UnsafeAddressesServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AddressesServer will
+// result in compilation errors.
+type UnsafeAddressesServer interface {
+	mustEmbedUnimplementedAddressesServer()
+}
+
+func RegisterAddressesServer(s grpc.ServiceRegistrar, srv AddressesServer) {
+	s.RegisterService(&Addresses_ServiceDesc, srv)
+}
+
+func _Addresses_ListAddresses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AddressesServer).ListAddresses(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Addresses_ListAddresses_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AddressesServer).ListAddresses(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Addresses_GetAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AddressesServer).GetAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Addresses_GetAddress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AddressesServer).GetAddress(ctx, req.(*GetAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Addresses_AddAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AddressesServer).AddAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Addresses_AddAddress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AddressesServer).AddAddress(ctx, req.(*AddAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Addresses_UpdateAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AddressesServer).UpdateAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Addresses_UpdateAddress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AddressesServer).UpdateAddress(ctx, req.(*UpdateAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Addresses_DeleteAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AddressesServer).DeleteAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Addresses_DeleteAddress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AddressesServer).DeleteAddress(ctx, req.(*DeleteAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Addresses_ServiceDesc is the grpc.ServiceDesc for Addresses service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var Addresses_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.http.v1.Addresses",
+	HandlerType: (*AddressesServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ListAddresses",
+			Handler:    _Addresses_ListAddresses_Handler,
 		},
 		{
-			MethodName: "ListAddress",
-			Handler:    _Gateway_ListAddress_Handler,
+			MethodName: "GetAddress",
+			Handler:    _Addresses_GetAddress_Handler,
 		},
 		{
 			MethodName: "AddAddress",
-			Handler:    _Gateway_AddAddress_Handler,
+			Handler:    _Addresses_AddAddress_Handler,
 		},
 		{
 			MethodName: "UpdateAddress",
-			Handler:    _Gateway_UpdateAddress_Handler,
+			Handler:    _Addresses_UpdateAddress_Handler,
 		},
 		{
-			MethodName: "DelAddress",
-			Handler:    _Gateway_DelAddress_Handler,
+			MethodName: "DeleteAddress",
+			Handler:    _Addresses_DeleteAddress_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "http/v1/gateway.proto",
+}
+
+const (
+	ReceivingMethods_ListReceivingMethods_FullMethodName  = "/api.http.v1.ReceivingMethods/ListReceivingMethods"
+	ReceivingMethods_GetReceivingMethod_FullMethodName    = "/api.http.v1.ReceivingMethods/GetReceivingMethod"
+	ReceivingMethods_AddReceivingMethod_FullMethodName    = "/api.http.v1.ReceivingMethods/AddReceivingMethod"
+	ReceivingMethods_UpdateReceivingMethod_FullMethodName = "/api.http.v1.ReceivingMethods/UpdateReceivingMethod"
+	ReceivingMethods_DeleteReceivingMethod_FullMethodName = "/api.http.v1.ReceivingMethods/DeleteReceivingMethod"
+)
+
+// ReceivingMethodsClient is the client API for ReceivingMethods service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// 收款方式
+type ReceivingMethodsClient interface {
+	// 收款方式列表
+	ListReceivingMethods(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*common.Reply, error)
+	// 获取单个收款方式
+	GetReceivingMethod(ctx context.Context, in *GetReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	// 添加收款方式
+	AddReceivingMethod(ctx context.Context, in *AddReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	// 更新收款方式
+	UpdateReceivingMethod(ctx context.Context, in *UpdateReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	// 删除收款方式
+	DeleteReceivingMethod(ctx context.Context, in *DeleteReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error)
+}
+
+type receivingMethodsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewReceivingMethodsClient(cc grpc.ClientConnInterface) ReceivingMethodsClient {
+	return &receivingMethodsClient{cc}
+}
+
+func (c *receivingMethodsClient) ListReceivingMethods(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, ReceivingMethods_ListReceivingMethods_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *receivingMethodsClient) GetReceivingMethod(ctx context.Context, in *GetReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, ReceivingMethods_GetReceivingMethod_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *receivingMethodsClient) AddReceivingMethod(ctx context.Context, in *AddReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, ReceivingMethods_AddReceivingMethod_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *receivingMethodsClient) UpdateReceivingMethod(ctx context.Context, in *UpdateReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, ReceivingMethods_UpdateReceivingMethod_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *receivingMethodsClient) DeleteReceivingMethod(ctx context.Context, in *DeleteReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(common.Reply)
+	err := c.cc.Invoke(ctx, ReceivingMethods_DeleteReceivingMethod_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ReceivingMethodsServer is the server API for ReceivingMethods service.
+// All implementations must embed UnimplementedReceivingMethodsServer
+// for forward compatibility
+//
+// 收款方式
+type ReceivingMethodsServer interface {
+	// 收款方式列表
+	ListReceivingMethods(context.Context, *emptypb.Empty) (*common.Reply, error)
+	// 获取单个收款方式
+	GetReceivingMethod(context.Context, *GetReceivingMethodRequest) (*common.Reply, error)
+	// 添加收款方式
+	AddReceivingMethod(context.Context, *AddReceivingMethodRequest) (*common.Reply, error)
+	// 更新收款方式
+	UpdateReceivingMethod(context.Context, *UpdateReceivingMethodRequest) (*common.Reply, error)
+	// 删除收款方式
+	DeleteReceivingMethod(context.Context, *DeleteReceivingMethodRequest) (*common.Reply, error)
+	mustEmbedUnimplementedReceivingMethodsServer()
+}
+
+// UnimplementedReceivingMethodsServer must be embedded to have forward compatible implementations.
+type UnimplementedReceivingMethodsServer struct {
+}
+
+func (UnimplementedReceivingMethodsServer) ListReceivingMethods(context.Context, *emptypb.Empty) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListReceivingMethods not implemented")
+}
+func (UnimplementedReceivingMethodsServer) GetReceivingMethod(context.Context, *GetReceivingMethodRequest) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReceivingMethod not implemented")
+}
+func (UnimplementedReceivingMethodsServer) AddReceivingMethod(context.Context, *AddReceivingMethodRequest) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddReceivingMethod not implemented")
+}
+func (UnimplementedReceivingMethodsServer) UpdateReceivingMethod(context.Context, *UpdateReceivingMethodRequest) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateReceivingMethod not implemented")
+}
+func (UnimplementedReceivingMethodsServer) DeleteReceivingMethod(context.Context, *DeleteReceivingMethodRequest) (*common.Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteReceivingMethod not implemented")
+}
+func (UnimplementedReceivingMethodsServer) mustEmbedUnimplementedReceivingMethodsServer() {}
+
+// UnsafeReceivingMethodsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ReceivingMethodsServer will
+// result in compilation errors.
+type UnsafeReceivingMethodsServer interface {
+	mustEmbedUnimplementedReceivingMethodsServer()
+}
+
+func RegisterReceivingMethodsServer(s grpc.ServiceRegistrar, srv ReceivingMethodsServer) {
+	s.RegisterService(&ReceivingMethods_ServiceDesc, srv)
+}
+
+func _ReceivingMethods_ListReceivingMethods_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReceivingMethodsServer).ListReceivingMethods(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReceivingMethods_ListReceivingMethods_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReceivingMethodsServer).ListReceivingMethods(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReceivingMethods_GetReceivingMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReceivingMethodRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReceivingMethodsServer).GetReceivingMethod(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReceivingMethods_GetReceivingMethod_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReceivingMethodsServer).GetReceivingMethod(ctx, req.(*GetReceivingMethodRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReceivingMethods_AddReceivingMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddReceivingMethodRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReceivingMethodsServer).AddReceivingMethod(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReceivingMethods_AddReceivingMethod_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReceivingMethodsServer).AddReceivingMethod(ctx, req.(*AddReceivingMethodRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReceivingMethods_UpdateReceivingMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateReceivingMethodRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReceivingMethodsServer).UpdateReceivingMethod(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReceivingMethods_UpdateReceivingMethod_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReceivingMethodsServer).UpdateReceivingMethod(ctx, req.(*UpdateReceivingMethodRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReceivingMethods_DeleteReceivingMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteReceivingMethodRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReceivingMethodsServer).DeleteReceivingMethod(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReceivingMethods_DeleteReceivingMethod_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReceivingMethodsServer).DeleteReceivingMethod(ctx, req.(*DeleteReceivingMethodRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ReceivingMethods_ServiceDesc is the grpc.ServiceDesc for ReceivingMethods service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ReceivingMethods_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.http.v1.ReceivingMethods",
+	HandlerType: (*ReceivingMethodsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ListReceivingMethods",
+			Handler:    _ReceivingMethods_ListReceivingMethods_Handler,
 		},
 		{
-			MethodName: "ListPaymentMethods",
-			Handler:    _Gateway_ListPaymentMethods_Handler,
+			MethodName: "GetReceivingMethod",
+			Handler:    _ReceivingMethods_GetReceivingMethod_Handler,
 		},
 		{
-			MethodName: "AddPaymentMethod",
-			Handler:    _Gateway_AddPaymentMethod_Handler,
+			MethodName: "AddReceivingMethod",
+			Handler:    _ReceivingMethods_AddReceivingMethod_Handler,
 		},
 		{
-			MethodName: "UpdatePaymentMethod",
-			Handler:    _Gateway_UpdatePaymentMethod_Handler,
+			MethodName: "UpdateReceivingMethod",
+			Handler:    _ReceivingMethods_UpdateReceivingMethod_Handler,
 		},
 		{
-			MethodName: "DelPaymentMethod",
-			Handler:    _Gateway_DelPaymentMethod_Handler,
+			MethodName: "DeleteReceivingMethod",
+			Handler:    _ReceivingMethods_DeleteReceivingMethod_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

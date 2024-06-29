@@ -11,6 +11,7 @@ import (
 	context "context"
 	http "github.com/go-kratos/kratos/v2/transport/http"
 	binding "github.com/go-kratos/kratos/v2/transport/http/binding"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -20,387 +21,114 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationGatewayAddAddress = "/api.http.v1.Gateway/AddAddress"
-const OperationGatewayAddPaymentMethod = "/api.http.v1.Gateway/AddPaymentMethod"
-const OperationGatewayDelAddress = "/api.http.v1.Gateway/DelAddress"
-const OperationGatewayDelPaymentMethod = "/api.http.v1.Gateway/DelPaymentMethod"
-const OperationGatewayGetAccountInfo = "/api.http.v1.Gateway/GetAccountInfo"
-const OperationGatewayListAddress = "/api.http.v1.Gateway/ListAddress"
-const OperationGatewayListPaymentMethods = "/api.http.v1.Gateway/ListPaymentMethods"
-const OperationGatewayRegisterAccount = "/api.http.v1.Gateway/RegisterAccount"
-const OperationGatewayUpdateAccount = "/api.http.v1.Gateway/UpdateAccount"
-const OperationGatewayUpdateAddress = "/api.http.v1.Gateway/UpdateAddress"
-const OperationGatewayUpdatePaymentMethod = "/api.http.v1.Gateway/UpdatePaymentMethod"
+const OperationAccountGetAccount = "/api.http.v1.Account/GetAccount"
+const OperationAccountRegisterAccount = "/api.http.v1.Account/RegisterAccount"
+const OperationAccountUpdateAccount = "/api.http.v1.Account/UpdateAccount"
 
-type GatewayHTTPServer interface {
-	AddAddress(context.Context, *AddAddressReq) (*common.Res, error)
-	AddPaymentMethod(context.Context, *AddPaymentMethodReq) (*common.Res, error)
-	DelAddress(context.Context, *DelAddressReq) (*common.Res, error)
-	DelPaymentMethod(context.Context, *DelPaymentMethodReq) (*common.Res, error)
-	// GetAccountInfo 通用读取账户信息
-	GetAccountInfo(context.Context, *GetAccountInfoReq) (*common.Res, error)
-	// ListAddress 地址簿
-	ListAddress(context.Context, *ListAddressReq) (*common.Res, error)
-	// ListPaymentMethods 支付管理
-	ListPaymentMethods(context.Context, *ListPaymentMethodsReq) (*common.Res, error)
+type AccountHTTPServer interface {
+	// GetAccount 读取账户
+	GetAccount(context.Context, *GetAccountRequest) (*common.Reply, error)
 	// RegisterAccount 注册账户
-	RegisterAccount(context.Context, *RegisterAccountReq) (*common.Res, error)
-	// UpdateAccount 更新用户账户数据
-	UpdateAccount(context.Context, *UpdateAccountReq) (*common.Res, error)
-	UpdateAddress(context.Context, *UpdateAddressReq) (*common.Res, error)
-	UpdatePaymentMethod(context.Context, *UpdatePaymentMethodReq) (*common.Res, error)
+	RegisterAccount(context.Context, *RegisterAccountRequest) (*common.Reply, error)
+	// UpdateAccount 更新账户
+	UpdateAccount(context.Context, *UpdateAccountRequest) (*common.Reply, error)
 }
 
-func RegisterGatewayHTTPServer(s *http.Server, srv GatewayHTTPServer) {
+func RegisterAccountHTTPServer(s *http.Server, srv AccountHTTPServer) {
 	r := s.Route("/")
-	r.POST("/v1/user/account/register", _Gateway_RegisterAccount0_HTTP_Handler(srv))
-	r.GET("/v1/user/account/info/{uid}", _Gateway_GetAccountInfo0_HTTP_Handler(srv))
-	r.GET("/v1/user/account/info", _Gateway_GetAccountInfo1_HTTP_Handler(srv))
-	r.POST("/v1/user/account/update", _Gateway_UpdateAccount0_HTTP_Handler(srv))
-	r.GET("/v1/user/address/list", _Gateway_ListAddress0_HTTP_Handler(srv))
-	r.POST("/v1/user/address/add", _Gateway_AddAddress0_HTTP_Handler(srv))
-	r.POST("/v1/user/address/update", _Gateway_UpdateAddress0_HTTP_Handler(srv))
-	r.POST("/v1/user/address/delete", _Gateway_DelAddress0_HTTP_Handler(srv))
-	r.GET("/v1/user/payment/list", _Gateway_ListPaymentMethods0_HTTP_Handler(srv))
-	r.POST("/v1/user/payment/add", _Gateway_AddPaymentMethod0_HTTP_Handler(srv))
-	r.POST("/v1/user/payment/update", _Gateway_UpdatePaymentMethod0_HTTP_Handler(srv))
-	r.POST("/v1/user/payment/delete", _Gateway_DelPaymentMethod0_HTTP_Handler(srv))
+	r.POST("/v1/user/accounts", _Account_RegisterAccount0_HTTP_Handler(srv))
+	r.GET("/v1/user/accounts/{uid}", _Account_GetAccount0_HTTP_Handler(srv))
+	r.PUT("/v1/user/accounts/{uid}", _Account_UpdateAccount0_HTTP_Handler(srv))
 }
 
-func _Gateway_RegisterAccount0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
+func _Account_RegisterAccount0_HTTP_Handler(srv AccountHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in RegisterAccountReq
+		var in RegisterAccountRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationGatewayRegisterAccount)
+		http.SetOperation(ctx, OperationAccountRegisterAccount)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.RegisterAccount(ctx, req.(*RegisterAccountReq))
+			return srv.RegisterAccount(ctx, req.(*RegisterAccountRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Res)
+		reply := out.(*common.Reply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Gateway_GetAccountInfo0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
+func _Account_GetAccount0_HTTP_Handler(srv AccountHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetAccountInfoReq
+		var in GetAccountRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationGatewayGetAccountInfo)
+		http.SetOperation(ctx, OperationAccountGetAccount)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetAccountInfo(ctx, req.(*GetAccountInfoReq))
+			return srv.GetAccount(ctx, req.(*GetAccountRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Res)
+		reply := out.(*common.Reply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Gateway_GetAccountInfo1_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
+func _Account_UpdateAccount0_HTTP_Handler(srv AccountHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetAccountInfoReq
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationGatewayGetAccountInfo)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetAccountInfo(ctx, req.(*GetAccountInfoReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*common.Res)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Gateway_UpdateAccount0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in UpdateAccountReq
+		var in UpdateAccountRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationGatewayUpdateAccount)
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAccountUpdateAccount)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdateAccount(ctx, req.(*UpdateAccountReq))
+			return srv.UpdateAccount(ctx, req.(*UpdateAccountRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Res)
+		reply := out.(*common.Reply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Gateway_ListAddress0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in ListAddressReq
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationGatewayListAddress)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ListAddress(ctx, req.(*ListAddressReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*common.Res)
-		return ctx.Result(200, reply)
-	}
+type AccountHTTPClient interface {
+	GetAccount(ctx context.Context, req *GetAccountRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	RegisterAccount(ctx context.Context, req *RegisterAccountRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	UpdateAccount(ctx context.Context, req *UpdateAccountRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
 }
 
-func _Gateway_AddAddress0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in AddAddressReq
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationGatewayAddAddress)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.AddAddress(ctx, req.(*AddAddressReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*common.Res)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Gateway_UpdateAddress0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in UpdateAddressReq
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationGatewayUpdateAddress)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdateAddress(ctx, req.(*UpdateAddressReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*common.Res)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Gateway_DelAddress0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in DelAddressReq
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationGatewayDelAddress)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.DelAddress(ctx, req.(*DelAddressReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*common.Res)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Gateway_ListPaymentMethods0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in ListPaymentMethodsReq
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationGatewayListPaymentMethods)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ListPaymentMethods(ctx, req.(*ListPaymentMethodsReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*common.Res)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Gateway_AddPaymentMethod0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in AddPaymentMethodReq
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationGatewayAddPaymentMethod)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.AddPaymentMethod(ctx, req.(*AddPaymentMethodReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*common.Res)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Gateway_UpdatePaymentMethod0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in UpdatePaymentMethodReq
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationGatewayUpdatePaymentMethod)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdatePaymentMethod(ctx, req.(*UpdatePaymentMethodReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*common.Res)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Gateway_DelPaymentMethod0_HTTP_Handler(srv GatewayHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in DelPaymentMethodReq
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationGatewayDelPaymentMethod)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.DelPaymentMethod(ctx, req.(*DelPaymentMethodReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*common.Res)
-		return ctx.Result(200, reply)
-	}
-}
-
-type GatewayHTTPClient interface {
-	AddAddress(ctx context.Context, req *AddAddressReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	AddPaymentMethod(ctx context.Context, req *AddPaymentMethodReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	DelAddress(ctx context.Context, req *DelAddressReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	DelPaymentMethod(ctx context.Context, req *DelPaymentMethodReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	GetAccountInfo(ctx context.Context, req *GetAccountInfoReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	ListAddress(ctx context.Context, req *ListAddressReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	ListPaymentMethods(ctx context.Context, req *ListPaymentMethodsReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	RegisterAccount(ctx context.Context, req *RegisterAccountReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	UpdateAccount(ctx context.Context, req *UpdateAccountReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	UpdateAddress(ctx context.Context, req *UpdateAddressReq, opts ...http.CallOption) (rsp *common.Res, err error)
-	UpdatePaymentMethod(ctx context.Context, req *UpdatePaymentMethodReq, opts ...http.CallOption) (rsp *common.Res, err error)
-}
-
-type GatewayHTTPClientImpl struct {
+type AccountHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewGatewayHTTPClient(client *http.Client) GatewayHTTPClient {
-	return &GatewayHTTPClientImpl{client}
+func NewAccountHTTPClient(client *http.Client) AccountHTTPClient {
+	return &AccountHTTPClientImpl{client}
 }
 
-func (c *GatewayHTTPClientImpl) AddAddress(ctx context.Context, in *AddAddressReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/address/add"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationGatewayAddAddress))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
-}
-
-func (c *GatewayHTTPClientImpl) AddPaymentMethod(ctx context.Context, in *AddPaymentMethodReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/payment/add"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationGatewayAddPaymentMethod))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
-}
-
-func (c *GatewayHTTPClientImpl) DelAddress(ctx context.Context, in *DelAddressReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/address/delete"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationGatewayDelAddress))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
-}
-
-func (c *GatewayHTTPClientImpl) DelPaymentMethod(ctx context.Context, in *DelPaymentMethodReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/payment/delete"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationGatewayDelPaymentMethod))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
-}
-
-func (c *GatewayHTTPClientImpl) GetAccountInfo(ctx context.Context, in *GetAccountInfoReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/account/info"
+func (c *AccountHTTPClientImpl) GetAccount(ctx context.Context, in *GetAccountRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/accounts/{uid}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationGatewayGetAccountInfo))
+	opts = append(opts, http.Operation(OperationAccountGetAccount))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -409,11 +137,217 @@ func (c *GatewayHTTPClientImpl) GetAccountInfo(ctx context.Context, in *GetAccou
 	return &out, nil
 }
 
-func (c *GatewayHTTPClientImpl) ListAddress(ctx context.Context, in *ListAddressReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/address/list"
+func (c *AccountHTTPClientImpl) RegisterAccount(ctx context.Context, in *RegisterAccountRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/accounts"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAccountRegisterAccount))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *AccountHTTPClientImpl) UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/accounts/{uid}"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAccountUpdateAccount))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+const OperationAddressesAddAddress = "/api.http.v1.Addresses/AddAddress"
+const OperationAddressesDeleteAddress = "/api.http.v1.Addresses/DeleteAddress"
+const OperationAddressesGetAddress = "/api.http.v1.Addresses/GetAddress"
+const OperationAddressesListAddresses = "/api.http.v1.Addresses/ListAddresses"
+const OperationAddressesUpdateAddress = "/api.http.v1.Addresses/UpdateAddress"
+
+type AddressesHTTPServer interface {
+	// AddAddress 添加地址
+	AddAddress(context.Context, *AddAddressRequest) (*common.Reply, error)
+	// DeleteAddress 删除地址
+	DeleteAddress(context.Context, *DeleteAddressRequest) (*common.Reply, error)
+	// GetAddress 读取单条地址
+	GetAddress(context.Context, *GetAddressRequest) (*common.Reply, error)
+	// ListAddresses 地址簿列表
+	ListAddresses(context.Context, *emptypb.Empty) (*common.Reply, error)
+	// UpdateAddress 更新地址
+	UpdateAddress(context.Context, *UpdateAddressRequest) (*common.Reply, error)
+}
+
+func RegisterAddressesHTTPServer(s *http.Server, srv AddressesHTTPServer) {
+	r := s.Route("/")
+	r.GET("/v1/user/addresses", _Addresses_ListAddresses0_HTTP_Handler(srv))
+	r.GET("/v1/user/addresses/{id}", _Addresses_GetAddress0_HTTP_Handler(srv))
+	r.POST("/v1/user/addresses", _Addresses_AddAddress0_HTTP_Handler(srv))
+	r.PUT("/v1/user/addresses/{id}", _Addresses_UpdateAddress0_HTTP_Handler(srv))
+	r.DELETE("/v1/user/addresses/{id}", _Addresses_DeleteAddress0_HTTP_Handler(srv))
+}
+
+func _Addresses_ListAddresses0_HTTP_Handler(srv AddressesHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in emptypb.Empty
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAddressesListAddresses)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListAddresses(ctx, req.(*emptypb.Empty))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Addresses_GetAddress0_HTTP_Handler(srv AddressesHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetAddressRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAddressesGetAddress)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetAddress(ctx, req.(*GetAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Addresses_AddAddress0_HTTP_Handler(srv AddressesHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in AddAddressRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAddressesAddAddress)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.AddAddress(ctx, req.(*AddAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Addresses_UpdateAddress0_HTTP_Handler(srv AddressesHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateAddressRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAddressesUpdateAddress)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateAddress(ctx, req.(*UpdateAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Addresses_DeleteAddress0_HTTP_Handler(srv AddressesHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DeleteAddressRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAddressesDeleteAddress)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteAddress(ctx, req.(*DeleteAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+type AddressesHTTPClient interface {
+	AddAddress(ctx context.Context, req *AddAddressRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	DeleteAddress(ctx context.Context, req *DeleteAddressRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	GetAddress(ctx context.Context, req *GetAddressRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	ListAddresses(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *common.Reply, err error)
+	UpdateAddress(ctx context.Context, req *UpdateAddressRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+}
+
+type AddressesHTTPClientImpl struct {
+	cc *http.Client
+}
+
+func NewAddressesHTTPClient(client *http.Client) AddressesHTTPClient {
+	return &AddressesHTTPClientImpl{client}
+}
+
+func (c *AddressesHTTPClientImpl) AddAddress(ctx context.Context, in *AddAddressRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/addresses"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAddressesAddAddress))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *AddressesHTTPClientImpl) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/addresses/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationGatewayListAddress))
+	opts = append(opts, http.Operation(OperationAddressesDeleteAddress))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *AddressesHTTPClientImpl) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/addresses/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAddressesGetAddress))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -422,11 +356,11 @@ func (c *GatewayHTTPClientImpl) ListAddress(ctx context.Context, in *ListAddress
 	return &out, nil
 }
 
-func (c *GatewayHTTPClientImpl) ListPaymentMethods(ctx context.Context, in *ListPaymentMethodsReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/payment/list"
+func (c *AddressesHTTPClientImpl) ListAddresses(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/addresses"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationGatewayListPaymentMethods))
+	opts = append(opts, http.Operation(OperationAddressesListAddresses))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -435,11 +369,178 @@ func (c *GatewayHTTPClientImpl) ListPaymentMethods(ctx context.Context, in *List
 	return &out, nil
 }
 
-func (c *GatewayHTTPClientImpl) RegisterAccount(ctx context.Context, in *RegisterAccountReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/account/register"
+func (c *AddressesHTTPClientImpl) UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/addresses/{id}"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationGatewayRegisterAccount))
+	opts = append(opts, http.Operation(OperationAddressesUpdateAddress))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+const OperationReceivingMethodsAddReceivingMethod = "/api.http.v1.ReceivingMethods/AddReceivingMethod"
+const OperationReceivingMethodsDeleteReceivingMethod = "/api.http.v1.ReceivingMethods/DeleteReceivingMethod"
+const OperationReceivingMethodsGetReceivingMethod = "/api.http.v1.ReceivingMethods/GetReceivingMethod"
+const OperationReceivingMethodsListReceivingMethods = "/api.http.v1.ReceivingMethods/ListReceivingMethods"
+const OperationReceivingMethodsUpdateReceivingMethod = "/api.http.v1.ReceivingMethods/UpdateReceivingMethod"
+
+type ReceivingMethodsHTTPServer interface {
+	// AddReceivingMethod 添加收款方式
+	AddReceivingMethod(context.Context, *AddReceivingMethodRequest) (*common.Reply, error)
+	// DeleteReceivingMethod 删除收款方式
+	DeleteReceivingMethod(context.Context, *DeleteReceivingMethodRequest) (*common.Reply, error)
+	// GetReceivingMethod 获取单个收款方式
+	GetReceivingMethod(context.Context, *GetReceivingMethodRequest) (*common.Reply, error)
+	// ListReceivingMethods 收款方式列表
+	ListReceivingMethods(context.Context, *emptypb.Empty) (*common.Reply, error)
+	// UpdateReceivingMethod 更新收款方式
+	UpdateReceivingMethod(context.Context, *UpdateReceivingMethodRequest) (*common.Reply, error)
+}
+
+func RegisterReceivingMethodsHTTPServer(s *http.Server, srv ReceivingMethodsHTTPServer) {
+	r := s.Route("/")
+	r.GET("/v1/user/receiving-methods", _ReceivingMethods_ListReceivingMethods0_HTTP_Handler(srv))
+	r.GET("/v1/user/receiving-methods/{id}", _ReceivingMethods_GetReceivingMethod0_HTTP_Handler(srv))
+	r.POST("/v1/user/receiving-methods", _ReceivingMethods_AddReceivingMethod0_HTTP_Handler(srv))
+	r.PUT("/v1/user/receiving-methods/{id}", _ReceivingMethods_UpdateReceivingMethod0_HTTP_Handler(srv))
+	r.DELETE("/v1/user/receiving-methods/{id}", _ReceivingMethods_DeleteReceivingMethod0_HTTP_Handler(srv))
+}
+
+func _ReceivingMethods_ListReceivingMethods0_HTTP_Handler(srv ReceivingMethodsHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in emptypb.Empty
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationReceivingMethodsListReceivingMethods)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListReceivingMethods(ctx, req.(*emptypb.Empty))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _ReceivingMethods_GetReceivingMethod0_HTTP_Handler(srv ReceivingMethodsHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetReceivingMethodRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationReceivingMethodsGetReceivingMethod)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetReceivingMethod(ctx, req.(*GetReceivingMethodRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _ReceivingMethods_AddReceivingMethod0_HTTP_Handler(srv ReceivingMethodsHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in AddReceivingMethodRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationReceivingMethodsAddReceivingMethod)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.AddReceivingMethod(ctx, req.(*AddReceivingMethodRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _ReceivingMethods_UpdateReceivingMethod0_HTTP_Handler(srv ReceivingMethodsHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateReceivingMethodRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationReceivingMethodsUpdateReceivingMethod)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateReceivingMethod(ctx, req.(*UpdateReceivingMethodRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _ReceivingMethods_DeleteReceivingMethod0_HTTP_Handler(srv ReceivingMethodsHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DeleteReceivingMethodRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationReceivingMethodsDeleteReceivingMethod)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteReceivingMethod(ctx, req.(*DeleteReceivingMethodRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*common.Reply)
+		return ctx.Result(200, reply)
+	}
+}
+
+type ReceivingMethodsHTTPClient interface {
+	AddReceivingMethod(ctx context.Context, req *AddReceivingMethodRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	DeleteReceivingMethod(ctx context.Context, req *DeleteReceivingMethodRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	GetReceivingMethod(ctx context.Context, req *GetReceivingMethodRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	ListReceivingMethods(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *common.Reply, err error)
+	UpdateReceivingMethod(ctx context.Context, req *UpdateReceivingMethodRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+}
+
+type ReceivingMethodsHTTPClientImpl struct {
+	cc *http.Client
+}
+
+func NewReceivingMethodsHTTPClient(client *http.Client) ReceivingMethodsHTTPClient {
+	return &ReceivingMethodsHTTPClientImpl{client}
+}
+
+func (c *ReceivingMethodsHTTPClientImpl) AddReceivingMethod(ctx context.Context, in *AddReceivingMethodRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/receiving-methods"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationReceivingMethodsAddReceivingMethod))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -448,39 +549,52 @@ func (c *GatewayHTTPClientImpl) RegisterAccount(ctx context.Context, in *Registe
 	return &out, nil
 }
 
-func (c *GatewayHTTPClientImpl) UpdateAccount(ctx context.Context, in *UpdateAccountReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/account/update"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationGatewayUpdateAccount))
+func (c *ReceivingMethodsHTTPClientImpl) DeleteReceivingMethod(ctx context.Context, in *DeleteReceivingMethodRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/receiving-methods/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationReceivingMethodsDeleteReceivingMethod))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return &out, nil
 }
 
-func (c *GatewayHTTPClientImpl) UpdateAddress(ctx context.Context, in *UpdateAddressReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/address/update"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationGatewayUpdateAddress))
+func (c *ReceivingMethodsHTTPClientImpl) GetReceivingMethod(ctx context.Context, in *GetReceivingMethodRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/receiving-methods/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationReceivingMethodsGetReceivingMethod))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return &out, nil
 }
 
-func (c *GatewayHTTPClientImpl) UpdatePaymentMethod(ctx context.Context, in *UpdatePaymentMethodReq, opts ...http.CallOption) (*common.Res, error) {
-	var out common.Res
-	pattern := "/v1/user/payment/update"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationGatewayUpdatePaymentMethod))
+func (c *ReceivingMethodsHTTPClientImpl) ListReceivingMethods(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/receiving-methods"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationReceivingMethodsListReceivingMethods))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *ReceivingMethodsHTTPClientImpl) UpdateReceivingMethod(ctx context.Context, in *UpdateReceivingMethodRequest, opts ...http.CallOption) (*common.Reply, error) {
+	var out common.Reply
+	pattern := "/v1/user/receiving-methods/{id}"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationReceivingMethodsUpdateReceivingMethod))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

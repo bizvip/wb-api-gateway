@@ -27,6 +27,6 @@ func NewGRPCServer(c *conf.Server, gatewaySvc *service.GatewayService, logger lo
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterGatewayServer(srv, gatewaySvc)
+	v1.RegisterAccountServer(srv, gatewaySvc)
 	return srv
 }
