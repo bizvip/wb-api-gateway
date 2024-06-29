@@ -7,7 +7,6 @@
 package v1
 
 import (
-	common "api_gateway_service/api/common"
 	context "context"
 	http "github.com/go-kratos/kratos/v2/transport/http"
 	binding "github.com/go-kratos/kratos/v2/transport/http/binding"
@@ -27,11 +26,11 @@ const OperationAccountUpdateAccount = "/api.http.v1.Account/UpdateAccount"
 
 type AccountHTTPServer interface {
 	// GetAccount 读取账户
-	GetAccount(context.Context, *GetAccountRequest) (*common.Reply, error)
+	GetAccount(context.Context, *GetAccountRequest) (*Reply, error)
 	// RegisterAccount 注册账户
-	RegisterAccount(context.Context, *RegisterAccountRequest) (*common.Reply, error)
+	RegisterAccount(context.Context, *RegisterAccountRequest) (*Reply, error)
 	// UpdateAccount 更新账户
-	UpdateAccount(context.Context, *UpdateAccountRequest) (*common.Reply, error)
+	UpdateAccount(context.Context, *UpdateAccountRequest) (*Reply, error)
 }
 
 func RegisterAccountHTTPServer(s *http.Server, srv AccountHTTPServer) {
@@ -58,7 +57,7 @@ func _Account_RegisterAccount0_HTTP_Handler(srv AccountHTTPServer) func(ctx http
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -80,7 +79,7 @@ func _Account_GetAccount0_HTTP_Handler(srv AccountHTTPServer) func(ctx http.Cont
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -105,15 +104,15 @@ func _Account_UpdateAccount0_HTTP_Handler(srv AccountHTTPServer) func(ctx http.C
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
 
 type AccountHTTPClient interface {
-	GetAccount(ctx context.Context, req *GetAccountRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
-	RegisterAccount(ctx context.Context, req *RegisterAccountRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
-	UpdateAccount(ctx context.Context, req *UpdateAccountRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	GetAccount(ctx context.Context, req *GetAccountRequest, opts ...http.CallOption) (rsp *Reply, err error)
+	RegisterAccount(ctx context.Context, req *RegisterAccountRequest, opts ...http.CallOption) (rsp *Reply, err error)
+	UpdateAccount(ctx context.Context, req *UpdateAccountRequest, opts ...http.CallOption) (rsp *Reply, err error)
 }
 
 type AccountHTTPClientImpl struct {
@@ -124,8 +123,8 @@ func NewAccountHTTPClient(client *http.Client) AccountHTTPClient {
 	return &AccountHTTPClientImpl{client}
 }
 
-func (c *AccountHTTPClientImpl) GetAccount(ctx context.Context, in *GetAccountRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *AccountHTTPClientImpl) GetAccount(ctx context.Context, in *GetAccountRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/accounts/{uid}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationAccountGetAccount))
@@ -137,8 +136,8 @@ func (c *AccountHTTPClientImpl) GetAccount(ctx context.Context, in *GetAccountRe
 	return &out, nil
 }
 
-func (c *AccountHTTPClientImpl) RegisterAccount(ctx context.Context, in *RegisterAccountRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *AccountHTTPClientImpl) RegisterAccount(ctx context.Context, in *RegisterAccountRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/accounts"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAccountRegisterAccount))
@@ -150,8 +149,8 @@ func (c *AccountHTTPClientImpl) RegisterAccount(ctx context.Context, in *Registe
 	return &out, nil
 }
 
-func (c *AccountHTTPClientImpl) UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *AccountHTTPClientImpl) UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/accounts/{uid}"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAccountUpdateAccount))
@@ -171,15 +170,15 @@ const OperationAddressesUpdateAddress = "/api.http.v1.Addresses/UpdateAddress"
 
 type AddressesHTTPServer interface {
 	// AddAddress 添加地址
-	AddAddress(context.Context, *AddAddressRequest) (*common.Reply, error)
+	AddAddress(context.Context, *AddAddressRequest) (*Reply, error)
 	// DeleteAddress 删除地址
-	DeleteAddress(context.Context, *DeleteAddressRequest) (*common.Reply, error)
+	DeleteAddress(context.Context, *DeleteAddressRequest) (*Reply, error)
 	// GetAddress 读取单条地址
-	GetAddress(context.Context, *GetAddressRequest) (*common.Reply, error)
+	GetAddress(context.Context, *GetAddressRequest) (*Reply, error)
 	// ListAddresses 地址簿列表
-	ListAddresses(context.Context, *emptypb.Empty) (*common.Reply, error)
+	ListAddresses(context.Context, *emptypb.Empty) (*Reply, error)
 	// UpdateAddress 更新地址
-	UpdateAddress(context.Context, *UpdateAddressRequest) (*common.Reply, error)
+	UpdateAddress(context.Context, *UpdateAddressRequest) (*Reply, error)
 }
 
 func RegisterAddressesHTTPServer(s *http.Server, srv AddressesHTTPServer) {
@@ -205,7 +204,7 @@ func _Addresses_ListAddresses0_HTTP_Handler(srv AddressesHTTPServer) func(ctx ht
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -227,7 +226,7 @@ func _Addresses_GetAddress0_HTTP_Handler(srv AddressesHTTPServer) func(ctx http.
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -249,7 +248,7 @@ func _Addresses_AddAddress0_HTTP_Handler(srv AddressesHTTPServer) func(ctx http.
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -274,7 +273,7 @@ func _Addresses_UpdateAddress0_HTTP_Handler(srv AddressesHTTPServer) func(ctx ht
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -296,17 +295,17 @@ func _Addresses_DeleteAddress0_HTTP_Handler(srv AddressesHTTPServer) func(ctx ht
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
 
 type AddressesHTTPClient interface {
-	AddAddress(ctx context.Context, req *AddAddressRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
-	DeleteAddress(ctx context.Context, req *DeleteAddressRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
-	GetAddress(ctx context.Context, req *GetAddressRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
-	ListAddresses(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *common.Reply, err error)
-	UpdateAddress(ctx context.Context, req *UpdateAddressRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	AddAddress(ctx context.Context, req *AddAddressRequest, opts ...http.CallOption) (rsp *Reply, err error)
+	DeleteAddress(ctx context.Context, req *DeleteAddressRequest, opts ...http.CallOption) (rsp *Reply, err error)
+	GetAddress(ctx context.Context, req *GetAddressRequest, opts ...http.CallOption) (rsp *Reply, err error)
+	ListAddresses(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *Reply, err error)
+	UpdateAddress(ctx context.Context, req *UpdateAddressRequest, opts ...http.CallOption) (rsp *Reply, err error)
 }
 
 type AddressesHTTPClientImpl struct {
@@ -317,8 +316,8 @@ func NewAddressesHTTPClient(client *http.Client) AddressesHTTPClient {
 	return &AddressesHTTPClientImpl{client}
 }
 
-func (c *AddressesHTTPClientImpl) AddAddress(ctx context.Context, in *AddAddressRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *AddressesHTTPClientImpl) AddAddress(ctx context.Context, in *AddAddressRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/addresses"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAddressesAddAddress))
@@ -330,8 +329,8 @@ func (c *AddressesHTTPClientImpl) AddAddress(ctx context.Context, in *AddAddress
 	return &out, nil
 }
 
-func (c *AddressesHTTPClientImpl) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *AddressesHTTPClientImpl) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/addresses/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationAddressesDeleteAddress))
@@ -343,8 +342,8 @@ func (c *AddressesHTTPClientImpl) DeleteAddress(ctx context.Context, in *DeleteA
 	return &out, nil
 }
 
-func (c *AddressesHTTPClientImpl) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *AddressesHTTPClientImpl) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/addresses/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationAddressesGetAddress))
@@ -356,8 +355,8 @@ func (c *AddressesHTTPClientImpl) GetAddress(ctx context.Context, in *GetAddress
 	return &out, nil
 }
 
-func (c *AddressesHTTPClientImpl) ListAddresses(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *AddressesHTTPClientImpl) ListAddresses(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/addresses"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationAddressesListAddresses))
@@ -369,8 +368,8 @@ func (c *AddressesHTTPClientImpl) ListAddresses(ctx context.Context, in *emptypb
 	return &out, nil
 }
 
-func (c *AddressesHTTPClientImpl) UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *AddressesHTTPClientImpl) UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/addresses/{id}"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAddressesUpdateAddress))
@@ -390,15 +389,15 @@ const OperationReceivingMethodsUpdateReceivingMethod = "/api.http.v1.ReceivingMe
 
 type ReceivingMethodsHTTPServer interface {
 	// AddReceivingMethod 添加收款方式
-	AddReceivingMethod(context.Context, *AddReceivingMethodRequest) (*common.Reply, error)
+	AddReceivingMethod(context.Context, *AddReceivingMethodRequest) (*Reply, error)
 	// DeleteReceivingMethod 删除收款方式
-	DeleteReceivingMethod(context.Context, *DeleteReceivingMethodRequest) (*common.Reply, error)
+	DeleteReceivingMethod(context.Context, *DeleteReceivingMethodRequest) (*Reply, error)
 	// GetReceivingMethod 获取单个收款方式
-	GetReceivingMethod(context.Context, *GetReceivingMethodRequest) (*common.Reply, error)
+	GetReceivingMethod(context.Context, *GetReceivingMethodRequest) (*Reply, error)
 	// ListReceivingMethods 收款方式列表
-	ListReceivingMethods(context.Context, *emptypb.Empty) (*common.Reply, error)
+	ListReceivingMethods(context.Context, *emptypb.Empty) (*Reply, error)
 	// UpdateReceivingMethod 更新收款方式
-	UpdateReceivingMethod(context.Context, *UpdateReceivingMethodRequest) (*common.Reply, error)
+	UpdateReceivingMethod(context.Context, *UpdateReceivingMethodRequest) (*Reply, error)
 }
 
 func RegisterReceivingMethodsHTTPServer(s *http.Server, srv ReceivingMethodsHTTPServer) {
@@ -424,7 +423,7 @@ func _ReceivingMethods_ListReceivingMethods0_HTTP_Handler(srv ReceivingMethodsHT
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -446,7 +445,7 @@ func _ReceivingMethods_GetReceivingMethod0_HTTP_Handler(srv ReceivingMethodsHTTP
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -468,7 +467,7 @@ func _ReceivingMethods_AddReceivingMethod0_HTTP_Handler(srv ReceivingMethodsHTTP
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -493,7 +492,7 @@ func _ReceivingMethods_UpdateReceivingMethod0_HTTP_Handler(srv ReceivingMethodsH
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -515,17 +514,17 @@ func _ReceivingMethods_DeleteReceivingMethod0_HTTP_Handler(srv ReceivingMethodsH
 		if err != nil {
 			return err
 		}
-		reply := out.(*common.Reply)
+		reply := out.(*Reply)
 		return ctx.Result(200, reply)
 	}
 }
 
 type ReceivingMethodsHTTPClient interface {
-	AddReceivingMethod(ctx context.Context, req *AddReceivingMethodRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
-	DeleteReceivingMethod(ctx context.Context, req *DeleteReceivingMethodRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
-	GetReceivingMethod(ctx context.Context, req *GetReceivingMethodRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
-	ListReceivingMethods(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *common.Reply, err error)
-	UpdateReceivingMethod(ctx context.Context, req *UpdateReceivingMethodRequest, opts ...http.CallOption) (rsp *common.Reply, err error)
+	AddReceivingMethod(ctx context.Context, req *AddReceivingMethodRequest, opts ...http.CallOption) (rsp *Reply, err error)
+	DeleteReceivingMethod(ctx context.Context, req *DeleteReceivingMethodRequest, opts ...http.CallOption) (rsp *Reply, err error)
+	GetReceivingMethod(ctx context.Context, req *GetReceivingMethodRequest, opts ...http.CallOption) (rsp *Reply, err error)
+	ListReceivingMethods(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *Reply, err error)
+	UpdateReceivingMethod(ctx context.Context, req *UpdateReceivingMethodRequest, opts ...http.CallOption) (rsp *Reply, err error)
 }
 
 type ReceivingMethodsHTTPClientImpl struct {
@@ -536,8 +535,8 @@ func NewReceivingMethodsHTTPClient(client *http.Client) ReceivingMethodsHTTPClie
 	return &ReceivingMethodsHTTPClientImpl{client}
 }
 
-func (c *ReceivingMethodsHTTPClientImpl) AddReceivingMethod(ctx context.Context, in *AddReceivingMethodRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *ReceivingMethodsHTTPClientImpl) AddReceivingMethod(ctx context.Context, in *AddReceivingMethodRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/receiving-methods"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationReceivingMethodsAddReceivingMethod))
@@ -549,8 +548,8 @@ func (c *ReceivingMethodsHTTPClientImpl) AddReceivingMethod(ctx context.Context,
 	return &out, nil
 }
 
-func (c *ReceivingMethodsHTTPClientImpl) DeleteReceivingMethod(ctx context.Context, in *DeleteReceivingMethodRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *ReceivingMethodsHTTPClientImpl) DeleteReceivingMethod(ctx context.Context, in *DeleteReceivingMethodRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/receiving-methods/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationReceivingMethodsDeleteReceivingMethod))
@@ -562,8 +561,8 @@ func (c *ReceivingMethodsHTTPClientImpl) DeleteReceivingMethod(ctx context.Conte
 	return &out, nil
 }
 
-func (c *ReceivingMethodsHTTPClientImpl) GetReceivingMethod(ctx context.Context, in *GetReceivingMethodRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *ReceivingMethodsHTTPClientImpl) GetReceivingMethod(ctx context.Context, in *GetReceivingMethodRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/receiving-methods/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationReceivingMethodsGetReceivingMethod))
@@ -575,8 +574,8 @@ func (c *ReceivingMethodsHTTPClientImpl) GetReceivingMethod(ctx context.Context,
 	return &out, nil
 }
 
-func (c *ReceivingMethodsHTTPClientImpl) ListReceivingMethods(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *ReceivingMethodsHTTPClientImpl) ListReceivingMethods(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/receiving-methods"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationReceivingMethodsListReceivingMethods))
@@ -588,8 +587,8 @@ func (c *ReceivingMethodsHTTPClientImpl) ListReceivingMethods(ctx context.Contex
 	return &out, nil
 }
 
-func (c *ReceivingMethodsHTTPClientImpl) UpdateReceivingMethod(ctx context.Context, in *UpdateReceivingMethodRequest, opts ...http.CallOption) (*common.Reply, error) {
-	var out common.Reply
+func (c *ReceivingMethodsHTTPClientImpl) UpdateReceivingMethod(ctx context.Context, in *UpdateReceivingMethodRequest, opts ...http.CallOption) (*Reply, error) {
+	var out Reply
 	pattern := "/v1/user/receiving-methods/{id}"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationReceivingMethodsUpdateReceivingMethod))

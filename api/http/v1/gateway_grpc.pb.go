@@ -7,7 +7,6 @@
 package v1
 
 import (
-	common "api_gateway_service/api/common"
 	context "context"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -33,11 +32,11 @@ const (
 // 用户账户
 type AccountClient interface {
 	// 注册账户
-	RegisterAccount(ctx context.Context, in *RegisterAccountRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	RegisterAccount(ctx context.Context, in *RegisterAccountRequest, opts ...grpc.CallOption) (*Reply, error)
 	// 读取账户
-	GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*Reply, error)
 	// 更新账户
-	UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*Reply, error)
 }
 
 type accountClient struct {
@@ -48,9 +47,9 @@ func NewAccountClient(cc grpc.ClientConnInterface) AccountClient {
 	return &accountClient{cc}
 }
 
-func (c *accountClient) RegisterAccount(ctx context.Context, in *RegisterAccountRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *accountClient) RegisterAccount(ctx context.Context, in *RegisterAccountRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, Account_RegisterAccount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -58,9 +57,9 @@ func (c *accountClient) RegisterAccount(ctx context.Context, in *RegisterAccount
 	return out, nil
 }
 
-func (c *accountClient) GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *accountClient) GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, Account_GetAccount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -68,9 +67,9 @@ func (c *accountClient) GetAccount(ctx context.Context, in *GetAccountRequest, o
 	return out, nil
 }
 
-func (c *accountClient) UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *accountClient) UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, Account_UpdateAccount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -85,11 +84,11 @@ func (c *accountClient) UpdateAccount(ctx context.Context, in *UpdateAccountRequ
 // 用户账户
 type AccountServer interface {
 	// 注册账户
-	RegisterAccount(context.Context, *RegisterAccountRequest) (*common.Reply, error)
+	RegisterAccount(context.Context, *RegisterAccountRequest) (*Reply, error)
 	// 读取账户
-	GetAccount(context.Context, *GetAccountRequest) (*common.Reply, error)
+	GetAccount(context.Context, *GetAccountRequest) (*Reply, error)
 	// 更新账户
-	UpdateAccount(context.Context, *UpdateAccountRequest) (*common.Reply, error)
+	UpdateAccount(context.Context, *UpdateAccountRequest) (*Reply, error)
 	mustEmbedUnimplementedAccountServer()
 }
 
@@ -97,13 +96,13 @@ type AccountServer interface {
 type UnimplementedAccountServer struct {
 }
 
-func (UnimplementedAccountServer) RegisterAccount(context.Context, *RegisterAccountRequest) (*common.Reply, error) {
+func (UnimplementedAccountServer) RegisterAccount(context.Context, *RegisterAccountRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterAccount not implemented")
 }
-func (UnimplementedAccountServer) GetAccount(context.Context, *GetAccountRequest) (*common.Reply, error) {
+func (UnimplementedAccountServer) GetAccount(context.Context, *GetAccountRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAccount not implemented")
 }
-func (UnimplementedAccountServer) UpdateAccount(context.Context, *UpdateAccountRequest) (*common.Reply, error) {
+func (UnimplementedAccountServer) UpdateAccount(context.Context, *UpdateAccountRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAccount not implemented")
 }
 func (UnimplementedAccountServer) mustEmbedUnimplementedAccountServer() {}
@@ -212,15 +211,15 @@ const (
 // 地址簿
 type AddressesClient interface {
 	// 地址簿列表
-	ListAddresses(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*common.Reply, error)
+	ListAddresses(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Reply, error)
 	// 读取单条地址
-	GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*Reply, error)
 	// 添加地址
-	AddAddress(ctx context.Context, in *AddAddressRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	AddAddress(ctx context.Context, in *AddAddressRequest, opts ...grpc.CallOption) (*Reply, error)
 	// 更新地址
-	UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*Reply, error)
 	// 删除地址
-	DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*Reply, error)
 }
 
 type addressesClient struct {
@@ -231,9 +230,9 @@ func NewAddressesClient(cc grpc.ClientConnInterface) AddressesClient {
 	return &addressesClient{cc}
 }
 
-func (c *addressesClient) ListAddresses(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *addressesClient) ListAddresses(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, Addresses_ListAddresses_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -241,9 +240,9 @@ func (c *addressesClient) ListAddresses(ctx context.Context, in *emptypb.Empty, 
 	return out, nil
 }
 
-func (c *addressesClient) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *addressesClient) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, Addresses_GetAddress_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -251,9 +250,9 @@ func (c *addressesClient) GetAddress(ctx context.Context, in *GetAddressRequest,
 	return out, nil
 }
 
-func (c *addressesClient) AddAddress(ctx context.Context, in *AddAddressRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *addressesClient) AddAddress(ctx context.Context, in *AddAddressRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, Addresses_AddAddress_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -261,9 +260,9 @@ func (c *addressesClient) AddAddress(ctx context.Context, in *AddAddressRequest,
 	return out, nil
 }
 
-func (c *addressesClient) UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *addressesClient) UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, Addresses_UpdateAddress_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -271,9 +270,9 @@ func (c *addressesClient) UpdateAddress(ctx context.Context, in *UpdateAddressRe
 	return out, nil
 }
 
-func (c *addressesClient) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *addressesClient) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, Addresses_DeleteAddress_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -288,15 +287,15 @@ func (c *addressesClient) DeleteAddress(ctx context.Context, in *DeleteAddressRe
 // 地址簿
 type AddressesServer interface {
 	// 地址簿列表
-	ListAddresses(context.Context, *emptypb.Empty) (*common.Reply, error)
+	ListAddresses(context.Context, *emptypb.Empty) (*Reply, error)
 	// 读取单条地址
-	GetAddress(context.Context, *GetAddressRequest) (*common.Reply, error)
+	GetAddress(context.Context, *GetAddressRequest) (*Reply, error)
 	// 添加地址
-	AddAddress(context.Context, *AddAddressRequest) (*common.Reply, error)
+	AddAddress(context.Context, *AddAddressRequest) (*Reply, error)
 	// 更新地址
-	UpdateAddress(context.Context, *UpdateAddressRequest) (*common.Reply, error)
+	UpdateAddress(context.Context, *UpdateAddressRequest) (*Reply, error)
 	// 删除地址
-	DeleteAddress(context.Context, *DeleteAddressRequest) (*common.Reply, error)
+	DeleteAddress(context.Context, *DeleteAddressRequest) (*Reply, error)
 	mustEmbedUnimplementedAddressesServer()
 }
 
@@ -304,19 +303,19 @@ type AddressesServer interface {
 type UnimplementedAddressesServer struct {
 }
 
-func (UnimplementedAddressesServer) ListAddresses(context.Context, *emptypb.Empty) (*common.Reply, error) {
+func (UnimplementedAddressesServer) ListAddresses(context.Context, *emptypb.Empty) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAddresses not implemented")
 }
-func (UnimplementedAddressesServer) GetAddress(context.Context, *GetAddressRequest) (*common.Reply, error) {
+func (UnimplementedAddressesServer) GetAddress(context.Context, *GetAddressRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAddress not implemented")
 }
-func (UnimplementedAddressesServer) AddAddress(context.Context, *AddAddressRequest) (*common.Reply, error) {
+func (UnimplementedAddressesServer) AddAddress(context.Context, *AddAddressRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAddress not implemented")
 }
-func (UnimplementedAddressesServer) UpdateAddress(context.Context, *UpdateAddressRequest) (*common.Reply, error) {
+func (UnimplementedAddressesServer) UpdateAddress(context.Context, *UpdateAddressRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAddress not implemented")
 }
-func (UnimplementedAddressesServer) DeleteAddress(context.Context, *DeleteAddressRequest) (*common.Reply, error) {
+func (UnimplementedAddressesServer) DeleteAddress(context.Context, *DeleteAddressRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAddress not implemented")
 }
 func (UnimplementedAddressesServer) mustEmbedUnimplementedAddressesServer() {}
@@ -469,15 +468,15 @@ const (
 // 收款方式
 type ReceivingMethodsClient interface {
 	// 收款方式列表
-	ListReceivingMethods(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*common.Reply, error)
+	ListReceivingMethods(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Reply, error)
 	// 获取单个收款方式
-	GetReceivingMethod(ctx context.Context, in *GetReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	GetReceivingMethod(ctx context.Context, in *GetReceivingMethodRequest, opts ...grpc.CallOption) (*Reply, error)
 	// 添加收款方式
-	AddReceivingMethod(ctx context.Context, in *AddReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	AddReceivingMethod(ctx context.Context, in *AddReceivingMethodRequest, opts ...grpc.CallOption) (*Reply, error)
 	// 更新收款方式
-	UpdateReceivingMethod(ctx context.Context, in *UpdateReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	UpdateReceivingMethod(ctx context.Context, in *UpdateReceivingMethodRequest, opts ...grpc.CallOption) (*Reply, error)
 	// 删除收款方式
-	DeleteReceivingMethod(ctx context.Context, in *DeleteReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error)
+	DeleteReceivingMethod(ctx context.Context, in *DeleteReceivingMethodRequest, opts ...grpc.CallOption) (*Reply, error)
 }
 
 type receivingMethodsClient struct {
@@ -488,9 +487,9 @@ func NewReceivingMethodsClient(cc grpc.ClientConnInterface) ReceivingMethodsClie
 	return &receivingMethodsClient{cc}
 }
 
-func (c *receivingMethodsClient) ListReceivingMethods(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *receivingMethodsClient) ListReceivingMethods(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, ReceivingMethods_ListReceivingMethods_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -498,9 +497,9 @@ func (c *receivingMethodsClient) ListReceivingMethods(ctx context.Context, in *e
 	return out, nil
 }
 
-func (c *receivingMethodsClient) GetReceivingMethod(ctx context.Context, in *GetReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *receivingMethodsClient) GetReceivingMethod(ctx context.Context, in *GetReceivingMethodRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, ReceivingMethods_GetReceivingMethod_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -508,9 +507,9 @@ func (c *receivingMethodsClient) GetReceivingMethod(ctx context.Context, in *Get
 	return out, nil
 }
 
-func (c *receivingMethodsClient) AddReceivingMethod(ctx context.Context, in *AddReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *receivingMethodsClient) AddReceivingMethod(ctx context.Context, in *AddReceivingMethodRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, ReceivingMethods_AddReceivingMethod_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -518,9 +517,9 @@ func (c *receivingMethodsClient) AddReceivingMethod(ctx context.Context, in *Add
 	return out, nil
 }
 
-func (c *receivingMethodsClient) UpdateReceivingMethod(ctx context.Context, in *UpdateReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *receivingMethodsClient) UpdateReceivingMethod(ctx context.Context, in *UpdateReceivingMethodRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, ReceivingMethods_UpdateReceivingMethod_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -528,9 +527,9 @@ func (c *receivingMethodsClient) UpdateReceivingMethod(ctx context.Context, in *
 	return out, nil
 }
 
-func (c *receivingMethodsClient) DeleteReceivingMethod(ctx context.Context, in *DeleteReceivingMethodRequest, opts ...grpc.CallOption) (*common.Reply, error) {
+func (c *receivingMethodsClient) DeleteReceivingMethod(ctx context.Context, in *DeleteReceivingMethodRequest, opts ...grpc.CallOption) (*Reply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(common.Reply)
+	out := new(Reply)
 	err := c.cc.Invoke(ctx, ReceivingMethods_DeleteReceivingMethod_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -545,15 +544,15 @@ func (c *receivingMethodsClient) DeleteReceivingMethod(ctx context.Context, in *
 // 收款方式
 type ReceivingMethodsServer interface {
 	// 收款方式列表
-	ListReceivingMethods(context.Context, *emptypb.Empty) (*common.Reply, error)
+	ListReceivingMethods(context.Context, *emptypb.Empty) (*Reply, error)
 	// 获取单个收款方式
-	GetReceivingMethod(context.Context, *GetReceivingMethodRequest) (*common.Reply, error)
+	GetReceivingMethod(context.Context, *GetReceivingMethodRequest) (*Reply, error)
 	// 添加收款方式
-	AddReceivingMethod(context.Context, *AddReceivingMethodRequest) (*common.Reply, error)
+	AddReceivingMethod(context.Context, *AddReceivingMethodRequest) (*Reply, error)
 	// 更新收款方式
-	UpdateReceivingMethod(context.Context, *UpdateReceivingMethodRequest) (*common.Reply, error)
+	UpdateReceivingMethod(context.Context, *UpdateReceivingMethodRequest) (*Reply, error)
 	// 删除收款方式
-	DeleteReceivingMethod(context.Context, *DeleteReceivingMethodRequest) (*common.Reply, error)
+	DeleteReceivingMethod(context.Context, *DeleteReceivingMethodRequest) (*Reply, error)
 	mustEmbedUnimplementedReceivingMethodsServer()
 }
 
@@ -561,19 +560,19 @@ type ReceivingMethodsServer interface {
 type UnimplementedReceivingMethodsServer struct {
 }
 
-func (UnimplementedReceivingMethodsServer) ListReceivingMethods(context.Context, *emptypb.Empty) (*common.Reply, error) {
+func (UnimplementedReceivingMethodsServer) ListReceivingMethods(context.Context, *emptypb.Empty) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListReceivingMethods not implemented")
 }
-func (UnimplementedReceivingMethodsServer) GetReceivingMethod(context.Context, *GetReceivingMethodRequest) (*common.Reply, error) {
+func (UnimplementedReceivingMethodsServer) GetReceivingMethod(context.Context, *GetReceivingMethodRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetReceivingMethod not implemented")
 }
-func (UnimplementedReceivingMethodsServer) AddReceivingMethod(context.Context, *AddReceivingMethodRequest) (*common.Reply, error) {
+func (UnimplementedReceivingMethodsServer) AddReceivingMethod(context.Context, *AddReceivingMethodRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddReceivingMethod not implemented")
 }
-func (UnimplementedReceivingMethodsServer) UpdateReceivingMethod(context.Context, *UpdateReceivingMethodRequest) (*common.Reply, error) {
+func (UnimplementedReceivingMethodsServer) UpdateReceivingMethod(context.Context, *UpdateReceivingMethodRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateReceivingMethod not implemented")
 }
-func (UnimplementedReceivingMethodsServer) DeleteReceivingMethod(context.Context, *DeleteReceivingMethodRequest) (*common.Reply, error) {
+func (UnimplementedReceivingMethodsServer) DeleteReceivingMethod(context.Context, *DeleteReceivingMethodRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteReceivingMethod not implemented")
 }
 func (UnimplementedReceivingMethodsServer) mustEmbedUnimplementedReceivingMethodsServer() {}

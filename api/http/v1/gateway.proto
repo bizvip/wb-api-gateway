@@ -7,16 +7,81 @@ option java_multiple_files = true;
 option java_package = "api.http.v1";
 option objc_class_prefix = "ApiHttpV1";
 
-import "common/common.proto";
+import "openapi/v3/annotations.proto";
 import "validate/validate.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-import "openapi/v3/annotations.proto";
+import "google/protobuf/any.proto";
+
+
+// 文档信息
+option (openapi.v3.document) = {
+  openapi: "3.0.0",
+  info: {
+    title: "WT API Docs",
+    version: "1.0.0",
+    description: "WT 接口文档",
+    contact: {
+      name: "Archer++",
+      url: "https://orcid.org/0009-0003-8150-367X"
+    }
+  },
+  servers: [
+    {
+      url: "http://127.0.0.1:8088",
+      description: "本地调试服务器"
+    },
+    {
+      url: "http://127.0.0.1:8088",
+      description: "测试文档服务器"
+    }
+  ],
+};
+
+// 通用返回消息
+message Reply {
+  uint32 code = 1;       // 返回码
+  string msg = 2;        // 返回信息
+  google.protobuf.Any data = 3; // 返回数据
+}
+
+// 用户账户信息
+message UserAccount {
+  uint64 id = 1;                     // 用户ID
+  string usr = 2;                    // 用户名
+  string pwd = 3;                    // 密码
+  string sec_pwd = 4;                // 二级密码
+  string mobile = 5;                 // 手机号
+  string email = 6;                  // 邮箱
+  string lang = 7;                   // 语言
+  string timezone = 8;               // 时区
+  string real_name = 9;              // 真实姓名
+  string id_no = 10;                 // 身份证号
+  string currency = 11;              // 货币类型
+  bool is_google_auth = 12;          // 是否启用谷歌验证
+  string google_auth = 13;           // 谷歌验证密钥
+  string device_id = 14;             // 设备ID
+  bool is_allowed_msg = 15;          // 是否允许短信
+  bool is_allowed_email = 16;        // 是否允许邮件
+  int32 msg_type = 17;               // 短信类型
+  bool is_real_auth = 18;            // 是否实名认证
+  bool is_added_bankcard = 19;       // 是否绑定银行卡
+  int32 security_level = 20;         // 安全等级
+  bool is_unread_notice = 21;        // 是否有未读通知
+  bool is_coupon = 22;               // 是否有优惠券
+  int32 status = 23;                 // 账户状态
+  string created_at = 24;            // 创建时间
+  string updated_at = 25;            // 更新时间
+  string deleted_at = 26;            // 删除时间
+}
+
+
+/****************************************** service 定义 ***********************************/
 
 // 用户账户
 service Account {
   // 注册账户
-  rpc RegisterAccount (RegisterAccountRequest) returns (common.Reply) {
+  rpc RegisterAccount (RegisterAccountRequest) returns (Reply) {
     option (google.api.http) = {
       post: "/v1/user/accounts"
       body: "*"
@@ -27,7 +92,7 @@ service Account {
     };
   }
   // 读取账户
-  rpc GetAccount (GetAccountRequest) returns (common.Reply) {
+  rpc GetAccount (GetAccountRequest) returns (Reply) {
     option (google.api.http) = {
       get: "/v1/user/accounts/{uid}"
     };
@@ -37,7 +102,7 @@ service Account {
     };
   }
   // 更新账户
-  rpc UpdateAccount (UpdateAccountRequest) returns (common.Reply) {
+  rpc UpdateAccount (UpdateAccountRequest) returns (Reply) {
     option (google.api.http) = {
       put: "/v1/user/accounts/{uid}"
       body: "*"
@@ -52,7 +117,7 @@ service Account {
 // 地址簿
 service Addresses {
   // 地址簿列表
-  rpc ListAddresses (google.protobuf.Empty) returns (common.Reply) {
+  rpc ListAddresses (google.protobuf.Empty) returns (Reply) {
     option (google.api.http) = {
       get: "/v1/user/addresses"
     };
@@ -62,7 +127,7 @@ service Addresses {
     };
   }
   // 读取单条地址
-  rpc GetAddress (GetAddressRequest) returns (common.Reply) {
+  rpc GetAddress (GetAddressRequest) returns (Reply) {
     option (google.api.http) = {
       get: "/v1/user/addresses/{id}"
     };
@@ -72,7 +137,7 @@ service Addresses {
     };
   }
   // 添加地址
-  rpc AddAddress (AddAddressRequest) returns (common.Reply) {
+  rpc AddAddress (AddAddressRequest) returns (Reply) {
     option (google.api.http) = {
       post: "/v1/user/addresses"
       body: "*"
@@ -83,7 +148,7 @@ service Addresses {
     };
   }
   // 更新地址
-  rpc UpdateAddress (UpdateAddressRequest) returns (common.Reply) {
+  rpc UpdateAddress (UpdateAddressRequest) returns (Reply) {
     option (google.api.http) = {
       put: "/v1/user/addresses/{id}"
       body: "*"
@@ -94,7 +159,7 @@ service Addresses {
     };
   }
   // 删除地址
-  rpc DeleteAddress (DeleteAddressRequest) returns (common.Reply) {
+  rpc DeleteAddress (DeleteAddressRequest) returns (Reply) {
     option (google.api.http) = {
       delete: "/v1/user/addresses/{id}"
     };
@@ -108,7 +173,7 @@ service Addresses {
 // 收款方式
 service ReceivingMethods {
   // 收款方式列表
-  rpc ListReceivingMethods (google.protobuf.Empty) returns (common.Reply) {
+  rpc ListReceivingMethods (google.protobuf.Empty) returns (Reply) {
     option (google.api.http) = {
       get: "/v1/user/receiving-methods"
     };
@@ -120,7 +185,7 @@ service ReceivingMethods {
   }
 
   // 获取单个收款方式
-  rpc GetReceivingMethod (GetReceivingMethodRequest) returns (common.Reply) {
+  rpc GetReceivingMethod (GetReceivingMethodRequest) returns (Reply) {
     option (google.api.http) = {
       get: "/v1/user/receiving-methods/{id}"
     };
@@ -132,7 +197,7 @@ service ReceivingMethods {
   }
 
   // 添加收款方式
-  rpc AddReceivingMethod (AddReceivingMethodRequest) returns (common.Reply) {
+  rpc AddReceivingMethod (AddReceivingMethodRequest) returns (Reply) {
     option (google.api.http) = {
       post: "/v1/user/receiving-methods"
       body: "*"
@@ -145,7 +210,7 @@ service ReceivingMethods {
   }
 
   // 更新收款方式
-  rpc UpdateReceivingMethod (UpdateReceivingMethodRequest) returns (common.Reply) {
+  rpc UpdateReceivingMethod (UpdateReceivingMethodRequest) returns (Reply) {
     option (google.api.http) = {
       put: "/v1/user/receiving-methods/{id}"
       body: "*"
@@ -158,7 +223,7 @@ service ReceivingMethods {
   }
 
   // 删除收款方式
-  rpc DeleteReceivingMethod (DeleteReceivingMethodRequest) returns (common.Reply) {
+  rpc DeleteReceivingMethod (DeleteReceivingMethodRequest) returns (Reply) {
     option (google.api.http) = {
       delete: "/v1/user/receiving-methods/{id}"
     };
@@ -229,7 +294,7 @@ message RegisterAccountRequest {
   string usr = 1 [(validate.rules).string = {min_len: 6, max_len: 32, pattern: "^[^\\s]+$", ignore_empty: false}];
   // 密码，长度必须在 60 到 100 个字符之间，不允许包含空格
   string pwd = 2 [(validate.rules).string = {min_len: 60, max_len: 100, pattern: "^[^\\s]+$", ignore_empty: false}];
-  // 语言代码，必须为两个小写字母的 ISO 639-1 语言代码
+  // 语言代码，必须为小写字母的 ISO 639-1 语言代码
   string lang = 3 [(validate.rules).string = {pattern: "^[a-z]{2}$", ignore_empty: false}];
   // 设备 ID，必须仅包含大小写字母、数字和下划线
   string deviceId = 4 [(validate.rules).string = {pattern: "^[a-zA-Z0-9_]+$", ignore_empty: false}];
@@ -242,7 +307,7 @@ message RegisterAccountRequest {
 message UpdateAccountRequest {
   // 用户 ID，必须为大于 0 的正整数
   uint64 uid = 1 [(validate.rules).uint64 = {gt: 0}];
-  // 语言代码，必须为两个小写字母的 ISO 639-1 语言代码
+  // 语言代码，必须为小写字母的 ISO 639-1 语言代码
   string lang = 2 [(validate.rules).string = {pattern: "^[a-z]{2}$", ignore_empty: false}];
   // 货币代码，必须为指定的合法货币代码，服务端将强制统一转换为大写
   string currency = 3 [(validate.rules).string = {in: ["CNY", "USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "HKD", "NZD", "KRW", "IDR", "VND", "TWD", "SGD", "BRL", "MOP", "USDT"], ignore_empty: false}];
