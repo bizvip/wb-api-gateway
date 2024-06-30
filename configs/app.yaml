@@ -1,0 +1,11 @@
+service:
+  id: "trade-service-1"
+  name: "Trade Service"
+  version: "1.0.0"
+server:
+  http:
+    addr: 0.0.0.0:8088
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:9099
+    timeout: 1s
