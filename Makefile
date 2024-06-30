@@ -88,7 +88,6 @@ all:
 	make errors;
 	make config;
 	make generate;
-	make build;
 
 # show help
 help:
